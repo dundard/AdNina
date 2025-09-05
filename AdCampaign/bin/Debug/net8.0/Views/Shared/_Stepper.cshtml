@@ -1,0 +1,220 @@
+<!-- Stepper Component -->
+<footer class="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-100 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between py-4">
+            <!-- Previous Button -->
+            <button id="prev-btn" 
+                    class="flex items-center space-x-2 px-6 py-3 text-muted hover:text-text transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    onclick="navigatePrevious()">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                <span class="font-medium">Önceki</span>
+            </button>
+            
+            <!-- Progress Indicator -->
+            <div class="hidden md:flex items-center space-x-2">
+                <div class="flex items-center space-x-2">
+                    <div id="step-1" class="step-indicator active">1</div>
+                    <div class="w-8 h-0.5 bg-gray-200" id="line-1"></div>
+                    <div id="step-2" class="step-indicator">2</div>
+                    <div class="w-8 h-0.5 bg-gray-200" id="line-2"></div>
+                    <div id="step-3" class="step-indicator">3</div>
+                    <div class="w-8 h-0.5 bg-gray-200" id="line-3"></div>
+                    <div id="step-4" class="step-indicator">4</div>
+                    <div class="w-8 h-0.5 bg-gray-200" id="line-4"></div>
+                    <div id="step-5" class="step-indicator">5</div>
+                </div>
+            </div>
+            
+            <!-- Next/Publish Button -->
+            <button id="next-btn" 
+                    class="btn-primary px-6 py-3 rounded-xl2 text-white font-medium transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                    onclick="navigateNext()">
+                <span id="next-text">İleri</span>
+                <svg class="w-4 h-4 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .step-indicator {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        items-center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        background: #f3f4f6;
+        color: #6b7280;
+        transition: all 0.3s ease;
+    }
+    
+    .step-indicator.active {
+        background: #7B61FF;
+        color: white;
+    }
+    
+    .step-indicator.completed {
+        background: #10b981;
+        color: white;
+    }
+    
+    .step-indicator.completed::after {
+        content: '✓';
+    }
+</style>
+
+<script>
+    function navigatePrevious() {
+        const path = window.location.pathname;
+        let previousUrl = '';
+        
+        switch(path) {
+            case '/analyze':
+                previousUrl = '/';
+                break;
+            case '/setup/summary':
+                previousUrl = '/analyze';
+                break;
+            case '/setup/competitors':
+                previousUrl = '/analyze';
+                break;
+            case '/adsets':
+                previousUrl = '/setup/competitors';
+                break;
+            case '/forecast':
+                previousUrl = '/adsets';
+                break;
+        }
+        
+        if (previousUrl) {
+            window.location.href = previousUrl;
+        }
+    }
+    
+    function navigateNext() {
+        const path = window.location.pathname;
+        let nextUrl = '';
+        
+        // Check if current step is valid before proceeding
+        if (!validateCurrentStep()) {
+            showToast('Lütfen gerekli alanları doldurun', 'error');
+            return;
+        }
+        
+        switch(path) {
+            case '/':
+                nextUrl = '/analyze';
+                break;
+            case '/analyze':
+                nextUrl = '/setup/summary';
+                break;
+            case '/setup/summary':
+                nextUrl = '/adsets';
+                break;
+            case '/setup/competitors':
+                nextUrl = '/adsets';
+                break;
+            case '/adsets':
+                nextUrl = '/forecast';
+                break;
+            case '/forecast':
+                // Publish action
+                publishCampaign();
+                return;
+        }
+        
+        if (nextUrl) {
+            window.location.href = nextUrl;
+        }
+    }
+    
+    function validateCurrentStep() {
+        const path = window.location.pathname;
+        const state = loadState();
+        
+        switch(path) {
+            case '/':
+                return state.url && validateUrl(state.url);
+            case '/setup/summary':
+            case '/setup/competitors':
+                return state.startAt && state.endAt && validateDates(state.startAt, state.endAt) && 
+                       state.locations && state.locations.length > 0 && 
+                       state.budget >= 10;
+            default:
+                return true;
+        }
+    }
+    
+    function publishCampaign() {
+        showToast('Taslak olarak kaydedildi.', 'success');
+        // Additional publish logic here
+    }
+    
+    // Update stepper based on current route
+    document.addEventListener('DOMContentLoaded', function() {
+        updateStepper();
+    });
+    
+    function updateStepper() {
+        const path = window.location.pathname;
+        const nextBtn = document.getElementById('next-btn');
+        const nextText = document.getElementById('next-text');
+        const prevBtn = document.getElementById('prev-btn');
+        
+        // Reset all steps
+        for (let i = 1; i <= 5; i++) {
+            const step = document.getElementById(`step-${i}`);
+            step.className = 'step-indicator';
+        }
+        
+        let currentStep = 1;
+        let isLastStep = false;
+        
+        switch(path) {
+            case '/':
+                currentStep = 1;
+                prevBtn.disabled = true;
+                break;
+            case '/analyze':
+                currentStep = 2;
+                prevBtn.disabled = false;
+                break;
+            case '/setup/summary':
+            case '/setup/competitors':
+                currentStep = 3;
+                prevBtn.disabled = false;
+                break;
+            case '/adsets':
+                currentStep = 4;
+                prevBtn.disabled = false;
+                break;
+            case '/forecast':
+                currentStep = 5;
+                isLastStep = true;
+                prevBtn.disabled = false;
+                nextText.textContent = 'Reklamları Yayınla';
+                break;
+        }
+        
+        // Mark completed steps
+        for (let i = 1; i < currentStep; i++) {
+            document.getElementById(`step-${i}`).className = 'step-indicator completed';
+        }
+        
+        // Mark current step
+        document.getElementById(`step-${currentStep}`).className = 'step-indicator active';
+        
+        // Update lines
+        for (let i = 1; i < currentStep; i++) {
+            const line = document.getElementById(`line-${i}`);
+            if (line) line.style.backgroundColor = '#7B61FF';
+        }
+    }
+</script>

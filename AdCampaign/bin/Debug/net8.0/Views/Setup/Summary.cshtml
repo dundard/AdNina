@@ -1,0 +1,499 @@
+@{
+    ViewData["Title"] = "Kampanya Kurulumu";
+}
+
+<!-- Setup Summary Page (003-1) -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column - Tabs and Summaryy -->
+        <div class="lg:col-span-7">
+            
+            <!-- Tab Navigation -->
+            <div class="bg-white rounded-xl2 shadow-card overflow-hidden mb-6">
+                <div class="border-b border-gray-200">
+                    <nav class="flex space-x-8 px-6">
+                        <button id="summary-tab" class="tab-button active py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap">
+                            İşletmenizin Özeti
+                        </button>
+                        <button id="competitors-tab" class="tab-button py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap">
+                            Rakipler
+                        </button>
+                    </nav>
+                </div>
+                
+                <!-- Tab Content -->
+                <div class="p-6">
+                    <!-- Summary Tab Content -->
+                    <div id="summary-content" class="tab-content">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="heading text-lg font-semibold text-text">
+                                    İşletme Analizi ve Strateji
+                                </h3>
+                                <div class="text-sm text-muted">
+                                    <span id="char-count">0</span> / 2000 karakter
+                                </div>
+                            </div>
+                            
+                            <textarea 
+                                id="business-summary"
+                                name="businessSummary"
+                                rows="12"
+                                maxlength="2000"
+                                placeholder="AI analizi sonuçlarınız buraya yüklenecek..."
+                                class="w-full p-4 border border-gray-300 rounded-input resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                            ></textarea>
+                            
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="text-muted">
+                                    Bu analiz AI tarafından oluşturulmuştur. Düzenleyebilirsiniz.
+                                </div>
+                                <button id="regenerate-summary" class="text-primary hover:text-primary600 font-medium">
+                                    Yeniden Oluştur
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Competitors Tab Content -->
+                    <div id="competitors-content" class="tab-content hidden">
+                        <p class="text-muted text-center py-8">
+                            Rakip analizi için <a href="/setup/competitors" class="text-primary hover:text-primary600 font-medium">buraya tıklayın</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Right Column - Form Card -->
+        <div class="lg:col-span-5">
+            <div class="bg-white rounded-xl2 shadow-card p-6 sticky top-24">
+                <h3 class="heading text-lg font-semibold text-text mb-6">
+                    Kampanya Detayları
+                </h3>
+                
+                <form id="setup-form" class="space-y-6">
+                    
+                    <!-- Project Name -->
+                    <div>
+                        <label for="project-name" class="block text-sm font-medium text-text mb-2">
+                            Proje Adı
+                        </label>
+                        <input 
+                            type="text" 
+                            id="project-name"
+                            name="projectName"
+                            placeholder="Kampanya adını girin"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-input focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                        />
+                    </div>
+                    
+                    <!-- Goal Selection -->
+                    <div>
+                        <label class="block text-sm font-medium text-text mb-3">
+                            Hedef
+                        </label>
+                        <div class="grid grid-cols-1 gap-2">
+                            <div class="goal-option" data-goal="Traffic">
+                                <input type="radio" id="goal-traffic" name="goal" value="Traffic" class="sr-only">
+                                <label for="goal-traffic" class="goal-label">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-2xl">🌐</span>
+                                        <div>
+                                            <div class="font-medium text-text">Web Sitesi Trafiği</div>
+                                            <div class="text-sm text-muted">Sitenize daha fazla ziyaretçi çekin</div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="goal-option" data-goal="Leads">
+                                <input type="radio" id="goal-leads" name="goal" value="Leads" class="sr-only">
+                                <label for="goal-leads" class="goal-label">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-2xl">📧</span>
+                                        <div>
+                                            <div class="font-medium text-text">Potansiyel Müşteri</div>
+                                            <div class="text-sm text-muted">Form doldurmalarını artırın</div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="goal-option" data-goal="Sales">
+                                <input type="radio" id="goal-sales" name="goal" value="Sales" class="sr-only">
+                                <label for="goal-sales" class="goal-label">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-2xl">💰</span>
+                                        <div>
+                                            <div class="font-medium text-text">Satış</div>
+                                            <div class="text-sm text-muted">Doğrudan satış artışı hedefleyin</div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- CTA Selection -->
+                    <div>
+                        <label for="cta-select" class="block text-sm font-medium text-text mb-2">
+                            Dönüşüm Düğmesi
+                        </label>
+                        <select 
+                            id="cta-select"
+                            name="cta"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-input focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                        >
+                            <option value="">Seçiniz</option>
+                            <!-- Options will be populated by JS -->
+                        </select>
+                    </div>
+                    
+                    <!-- Date Range -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="start-date" class="block text-sm font-medium text-text mb-2">
+                                Başlangıç
+                            </label>
+                            <input 
+                                type="text" 
+                                id="start-date"
+                                name="startAt"
+                                placeholder="Tarih seçin"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-input focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                            />
+                        </div>
+                        <div>
+                            <label for="end-date" class="block text-sm font-medium text-text mb-2">
+                                Bitiş
+                            </label>
+                            <input 
+                                type="text" 
+                                id="end-date"
+                                name="endAt"
+                                placeholder="Tarih seçin"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-input focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                            />
+                        </div>
+                    </div>
+                    
+                    <!-- Locations -->
+                    <div>
+                        <label class="block text-sm font-medium text-text mb-2">
+                            Şehir & Ülkeler
+                        </label>
+                        <div id="location-tags"></div>
+                    </div>
+                    
+                    <!-- Google Maps -->
+                    <div>
+                        <label class="block text-sm font-medium text-text mb-2">
+                            Konum
+                        </label>
+                        <div class="w-full h-48 bg-gray-100 rounded-lg overflow-hidden">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3010.1472964929987!2d28.97658831539495!3d41.00665792929578!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab9bd6570f6e1%3A0xe1dcbdf02b7e2cb6!2sIstanbul%2C%20Turkey!5e0!3m2!1sen!2s!4v1635789012345!5m2!1sen!2s"
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy">
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+@section Scripts {
+<script type="text/babel">
+    // Mount TagInput component
+    const tagInputRoot = ReactDOM.createRoot(document.getElementById('location-tags'));
+    
+    function LocationTagInput() {
+        const [locations, setLocations] = React.useState([]);
+        
+        React.useEffect(() => {
+            const state = loadState();
+            if (state.locations) {
+                setLocations(state.locations);
+            }
+        }, []);
+        
+        const handleLocationsChange = (newLocations) => {
+            setLocations(newLocations);
+            saveState({ locations: newLocations });
+        };
+        
+        const suggestions = window.AppData ? window.AppData.locations : [
+            'Turkey', 'Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya'
+        ];
+        
+        return (
+            <TagInput 
+                value={locations}
+                onChange={handleLocationsChange}
+                suggestions={suggestions}
+                placeholder="Şehir veya ülke ekleyin..."
+            />
+        );
+    }
+    
+    tagInputRoot.render(<LocationTagInput />);
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const state = loadState();
+        
+        // Initialize tabs
+        initTabs();
+        
+        // Initialize flatpickr for dates
+        initDatePickers();
+        
+        // Populate form with saved state
+        populateForm();
+        
+        // Initialize CTA options
+        initCTAOptions();
+        
+        // Load business summary
+        loadBusinessSummary();
+        
+        // Bind form changes to state
+        bindFormToState('setup-form', ['projectName', 'goal', 'cta', 'startAt', 'endAt']);
+        
+        function initTabs() {
+            const summaryTab = document.getElementById('summary-tab');
+            const competitorsTab = document.getElementById('competitors-tab');
+            const summaryContent = document.getElementById('summary-content');
+            const competitorsContent = document.getElementById('competitors-content');
+            
+            summaryTab.addEventListener('click', function() {
+                setActiveTab('summary');
+            });
+            
+            competitorsTab.addEventListener('click', function() {
+                window.location.href = '/setup/competitors';
+            });
+            
+            function setActiveTab(tab) {
+                // Remove active from all tabs
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Hide all content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                if (tab === 'summary') {
+                    summaryTab.classList.add('active');
+                    summaryContent.classList.remove('hidden');
+                }
+            }
+        }
+        
+        function initDatePickers() {
+            const startDateEl = document.getElementById('start-date');
+            const endDateEl = document.getElementById('end-date');
+            
+            const startPicker = flatpickr(startDateEl, {
+                locale: 'tr',
+                dateFormat: 'd.m.Y',
+                minDate: 'today',
+                onChange: function(selectedDates) {
+                    if (selectedDates[0]) {
+                        endPicker.set('minDate', selectedDates[0]);
+                        const dateStr = selectedDates[0].toISOString();
+                        saveState({ startAt: dateStr });
+                    }
+                }
+            });
+            
+            const endPicker = flatpickr(endDateEl, {
+                locale: 'tr',
+                dateFormat: 'd.m.Y',
+                minDate: 'today',
+                onChange: function(selectedDates) {
+                    if (selectedDates[0]) {
+                        const dateStr = selectedDates[0].toISOString();
+                        saveState({ endAt: dateStr });
+                    }
+                }
+            });
+            
+            // Load saved dates
+            if (state.startAt) {
+                startPicker.setDate(new Date(state.startAt));
+            }
+            if (state.endAt) {
+                endPicker.setDate(new Date(state.endAt));
+            }
+        }
+        
+        function populateForm() {
+            // Project name
+            const projectNameEl = document.getElementById('project-name');
+            if (projectNameEl && state.projectName) {
+                projectNameEl.value = state.projectName;
+            }
+            
+            // Goal selection
+            if (state.goal) {
+                const goalRadio = document.querySelector(`input[name="goal"][value="${state.goal}"]`);
+                if (goalRadio) {
+                    goalRadio.checked = true;
+                    updateGoalSelection(state.goal);
+                }
+            }
+            
+            // CTA selection
+            if (state.cta) {
+                const ctaSelect = document.getElementById('cta-select');
+                if (ctaSelect) {
+                    ctaSelect.value = state.cta;
+                }
+            }
+        }
+        
+        function initCTAOptions() {
+            const ctaSelect = document.getElementById('cta-select');
+            const ctaOptions = window.AppData ? window.AppData.ctaOptions : [
+                'Daha Fazla Bilgi',
+                'Ücretsiz Konsültasyon',
+                'Randevu Al',
+                'Hemen Ara'
+            ];
+            
+            ctaOptions.forEach(option => {
+                const optionEl = document.createElement('option');
+                optionEl.value = option;
+                optionEl.textContent = option;
+                ctaSelect.appendChild(optionEl);
+            });
+        }
+        
+        function loadBusinessSummary() {
+            const summaryTextarea = document.getElementById('business-summary');
+            const charCount = document.getElementById('char-count');
+            
+            // Load summary from analysis data
+            if (window.AppData && window.AppData.analysis) {
+                summaryTextarea.value = window.AppData.analysis.summaryTR;
+                updateCharCount();
+            }
+            
+            // Character count
+            summaryTextarea.addEventListener('input', updateCharCount);
+            
+            function updateCharCount() {
+                const count = summaryTextarea.value.length;
+                charCount.textContent = count;
+                
+                if (count > 1800) {
+                    charCount.classList.add('text-red-500');
+                } else if (count > 1500) {
+                    charCount.classList.add('text-yellow-500');
+                } else {
+                    charCount.classList.remove('text-red-500', 'text-yellow-500');
+                }
+            }
+            
+            // Regenerate summary
+            const regenerateBtn = document.getElementById('regenerate-summary');
+            regenerateBtn.addEventListener('click', function() {
+                // Simulate regeneration
+                regenerateBtn.textContent = 'Oluşturuluyor...';
+                regenerateBtn.disabled = true;
+                
+                setTimeout(() => {
+                    if (window.AppData && window.AppData.analysis) {
+                        // Add some variation to the summary
+                        const variation = "\\n\\n[Güncellenmiş analiz] " + new Date().toLocaleTimeString();
+                        summaryTextarea.value = window.AppData.analysis.summaryTR + variation;
+                        updateCharCount();
+                    }
+                    
+                    regenerateBtn.textContent = 'Yeniden Oluştur';
+                    regenerateBtn.disabled = false;
+                    showToast('İçerik yenilendi!', 'success');
+                }, 2000);
+            });
+        }
+        
+        // Goal selection handling
+        const goalOptions = document.querySelectorAll('.goal-option');
+        goalOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const goal = this.dataset.goal;
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+                updateGoalSelection(goal);
+                saveState({ goal: goal });
+            });
+        });
+        
+        function updateGoalSelection(selectedGoal) {
+            goalOptions.forEach(option => {
+                if (option.dataset.goal === selectedGoal) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    .tab-button {
+        border-bottom-color: transparent;
+        color: #6B7280;
+        transition: all 0.3s ease;
+    }
+    
+    .tab-button.active {
+        border-bottom-color: #7B61FF;
+        color: #7B61FF;
+    }
+    
+    .tab-button:hover {
+        color: #7B61FF;
+    }
+    
+    .goal-option {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .goal-label {
+        display: block;
+        padding: 1rem;
+        border: 2px solid #E5E7EB;
+        border-radius: 0.875rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .goal-option:hover .goal-label {
+        border-color: #7B61FF;
+        background-color: rgba(123, 97, 255, 0.05);
+    }
+    
+    .goal-option.selected .goal-label {
+        border-color: #7B61FF;
+        background-color: rgba(123, 97, 255, 0.1);
+        box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.1);
+    }
+</style>
+}

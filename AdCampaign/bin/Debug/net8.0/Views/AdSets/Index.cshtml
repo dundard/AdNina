@@ -1,0 +1,495 @@
+@{
+    ViewData["Title"] = "Reklam Setleri";
+}
+
+<!-- AdSets Page - Ad Sets & Budget (004-1) -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="heading text-2xl font-bold text-text" id="project-title">
+                <!-- Project name will be populated by JS -->
+            </h1>
+            <div class="flex items-center space-x-3 mt-2">
+                <span class="goal-badge" id="goal-badge">
+                    <!-- Goal badge will be populated by JS -->
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Daily Budget Section -->
+    <div class="bg-white rounded-xl2 shadow-card p-6 mb-8">
+        <h2 class="heading text-xl font-semibold text-text mb-6">
+            Günlük Bütçe
+        </h2>
+        
+        <!-- Budget Slider Component -->
+        <div id="budget-slider-container"></div>
+    </div>
+    
+    <!-- Tabs and Content -->
+    <div class="bg-white rounded-xl2 shadow-card overflow-hidden mb-8">
+        <div class="border-b border-gray-200">
+            <nav class="flex space-x-8 px-6">
+                <button id="adsets-tab" class="tab-button active py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap">
+                    Reklam Setleri
+                </button>
+                <button id="performance-tab" class="tab-button py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap">
+                    Performans Tahmini
+                </button>
+            </nav>
+        </div>
+        
+        <div class="p-6">
+            <!-- AdSets Tab Content -->
+            <div id="adsets-content" class="tab-content">
+                
+                <!-- Assets Button -->
+                <div class="mb-6">
+                    <button id="assets-button" class="flex items-center space-x-2 px-6 py-3 border-2 border-dashed border-gray-300 rounded-xl2 hover:border-primary hover:bg-primary/5 transition-all">
+                        <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span class="text-muted font-medium">Görseller ve videolar (<span id="assets-count">10</span>)</span>
+                    </button>
+                </div>
+                
+                <!-- AdSets Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    
+                    <!-- Left Column - AdSets List -->
+                    <div class="lg:col-span-5">
+                        <h3 class="heading text-lg font-semibold text-text mb-4">
+                            Reklam Setleri
+                        </h3>
+                        
+                        <div id="adsets-list" class="space-y-4">
+                            <!-- AdSet items will be populated by JS -->
+                        </div>
+                        
+                        <!-- Add New AdSet Button -->
+                        <button id="add-adset-btn" class="w-full mt-4 py-3 border-2 border-dashed border-gray-300 rounded-xl2 text-muted hover:border-primary hover:text-primary hover:bg-primary/5 transition-all">
+                            <span class="font-medium">+ Yeni Reklam Seti Ekle</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Right Column - AdSet Detail -->
+                    <div class="lg:col-span-7">
+                        <div id="adset-detail">
+                            <!-- AdSet detail will be populated by JS using _AdSetCard partial -->
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <!-- Performance Tab Content -->
+            <div id="performance-content" class="tab-content hidden">
+                <div class="space-y-6">
+                    
+                    <!-- Performance Metrics -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl2 p-4 border border-blue-200">
+                            <div class="text-blue-600 text-sm font-medium mb-1">Tahmini Erişim</div>
+                            <div class="text-blue-900 text-2xl font-bold" id="metric-reach">
+                                <!-- Will be populated by JS -->
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-xl2 p-4 border border-green-200">
+                            <div class="text-green-600 text-sm font-medium mb-1">Gösterim</div>
+                            <div class="text-green-900 text-2xl font-bold" id="metric-impressions">
+                                <!-- Will be populated by JS -->
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-xl2 p-4 border border-yellow-200">
+                            <div class="text-yellow-600 text-sm font-medium mb-1">Tıklanma</div>
+                            <div class="text-yellow-900 text-2xl font-bold" id="metric-clicks">
+                                <!-- Will be populated by JS -->
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl2 p-4 border border-purple-200">
+                            <div class="text-purple-600 text-sm font-medium mb-1">Dönüşüm</div>
+                            <div class="text-purple-900 text-2xl font-bold" id="metric-conversions">
+                                <!-- Will be populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Chart -->
+                    <div id="performance-chart-container"></div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- Hidden file input for assets -->
+    <input type="file" id="file-input" multiple accept="image/*,video/*" style="display: none;">
+    
+</div>
+
+@section Scripts {
+<script type="text/babel">
+    // Mount Budget Slider Component
+    const budgetSliderRoot = ReactDOM.createRoot(document.getElementById('budget-slider-container'));
+    
+    function BudgetSliderWrapper() {
+        const [budget, setBudget] = React.useState(30);
+        
+        React.useEffect(() => {
+            const state = loadState();
+            if (state.budget) {
+                setBudget(state.budget);
+            }
+        }, []);
+        
+        const handleBudgetChange = (newBudget) => {
+            setBudget(newBudget);
+            // Update performance metrics when budget changes
+            updatePerformanceMetrics(newBudget);
+        };
+        
+        return (
+            <BudgetSlider 
+                value={budget}
+                onChange={handleBudgetChange}
+                showCurrency={true}
+            />
+        );
+    }
+    
+    budgetSliderRoot.render(<BudgetSliderWrapper />);
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const state = loadState();
+        
+        // Initialize page
+        initHeader();
+        initTabs();
+        initAdSetsList();
+        initAssets();
+        updatePerformanceMetrics(state.budget || 30);
+        
+        function initHeader() {
+            // Set project title
+            const titleEl = document.getElementById('project-title');
+            if (titleEl && state.projectName) {
+                titleEl.textContent = state.projectName;
+            }
+            
+            // Set goal badge
+            const badgeEl = document.getElementById('goal-badge');
+            if (badgeEl && state.goal) {
+                const goalInfo = getGoalInfo(state.goal);
+                badgeEl.innerHTML = `
+                    <span class="inline-flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
+                        <span>${goalInfo.icon}</span>
+                        <span>${goalInfo.label}</span>
+                    </span>
+                `;
+            }
+        }
+        
+        function getGoalInfo(goal) {
+            const goals = {
+                'Traffic': { icon: '🌐', label: 'Web Sitesi Trafiği' },
+                'Leads': { icon: '📧', label: 'Potansiyel Müşteri' },
+                'Sales': { icon: '💰', label: 'Satış' }
+            };
+            return goals[goal] || goals['Traffic'];
+        }
+        
+        function initTabs() {
+            const adsetsTab = document.getElementById('adsets-tab');
+            const performanceTab = document.getElementById('performance-tab');
+            const adsetsContent = document.getElementById('adsets-content');
+            const performanceContent = document.getElementById('performance-content');
+            
+            adsetsTab.addEventListener('click', function() {
+                setActiveTab('adsets');
+            });
+            
+            performanceTab.addEventListener('click', function() {
+                setActiveTab('performance');
+            });
+            
+            function setActiveTab(tab) {
+                // Remove active from all tabs
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Hide all content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                if (tab === 'adsets') {
+                    adsetsTab.classList.add('active');
+                    adsetsContent.classList.remove('hidden');
+                } else if (tab === 'performance') {
+                    performanceTab.classList.add('active');
+                    performanceContent.classList.remove('hidden');
+                    
+                    // Render performance chart when tab is shown
+                    setTimeout(() => {
+                        renderPerformanceChart();
+                    }, 100);
+                }
+            }
+        }
+        
+        function initAdSetsList() {
+            const adsetsList = document.getElementById('adsets-list');
+            const adsetDetail = document.getElementById('adset-detail');
+            
+            // Load adsets from data
+            const adsets = window.AppData ? window.AppData.adsets : [];
+            
+            // Render adsets list
+            adsetsList.innerHTML = '';
+            adsets.forEach((adset, index) => {
+                const adsetItem = document.createElement('div');
+                adsetItem.className = `adset-item p-4 border border-gray-200 rounded-xl2 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all ${index === 0 ? 'selected' : ''}`;
+                adsetItem.dataset.adsetId = adset.id;
+                
+                adsetItem.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-text">${adset.title}</h4>
+                            <p class="text-sm text-muted">${adset.age} • ${adset.gender}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-semibold text-text">$${adset.spend}</div>
+                            <div class="text-xs text-muted">günlük</div>
+                        </div>
+                    </div>
+                `;
+                
+                adsetItem.addEventListener('click', function() {
+                    selectAdSet(adset, this);
+                });
+                
+                adsetsList.appendChild(adsetItem);
+            });
+            
+            // Show first adset by default
+            if (adsets.length > 0) {
+                selectAdSet(adsets[0], adsetsList.firstChild);
+            }
+            
+            // Add new adset functionality
+            const addBtn = document.getElementById('add-adset-btn');
+            addBtn.addEventListener('click', function() {
+                showToast('Yeni reklam seti ekleme özelliği yakında!', 'info');
+            });
+        }
+        
+        function selectAdSet(adset, element) {
+            // Remove selected from all items
+            document.querySelectorAll('.adset-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Add selected to clicked item
+            element.classList.add('selected');
+            
+            // Render adset detail using the partial template structure
+            const adsetDetail = document.getElementById('adset-detail');
+            adsetDetail.innerHTML = `
+                <div class="bg-white rounded-xl2 shadow-card p-6 card-hover">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-text heading">${adset.title}</h3>
+                            <div class="flex items-center space-x-4 mt-2 text-sm text-muted">
+                                <span>Yaş: ${adset.age}</span>
+                                <span>•</span>
+                                <span>Cinsiyet: ${adset.gender}</span>
+                                <span>•</span>
+                                <span>Konum: ${adset.locations.join(', ')}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-muted">Günlük:</span>
+                            <span class="text-lg font-semibold text-text">$${adset.spend}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Audience Description -->
+                    <div class="mb-4">
+                        <h4 class="text-sm font-medium text-text mb-2">Hedef Kitle Açıklaması</h4>
+                        <p class="text-sm text-muted">${adset.audienceDescription}</p>
+                    </div>
+                    
+                    <!-- Ad Copy -->
+                    <div class="mb-4">
+                        <h4 class="text-sm font-medium text-text mb-2">Reklam Metni</h4>
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <p class="text-sm text-text font-medium mb-1">${adset.headline}</p>
+                            <p class="text-sm text-muted">${adset.body}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tags -->
+                    <div class="mb-4">
+                        <div class="flex flex-wrap gap-2">
+                            ${adset.tags.map(tag => `<span class="tag-pill px-2 py-1 rounded-full text-xs font-medium">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- Post Preview -->
+                    <div class="border border-gray-200 rounded-lg p-3">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                                <span class="text-white text-xs font-semibold">AL</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-text">Akıllı Lens Merkezi</p>
+                                <p class="text-xs text-muted">Sponsorlu</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Mock image placeholder -->
+                        <div class="w-full h-32 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg mb-3 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        
+                        <p class="text-sm text-text">${adset.body}</p>
+                        
+                        <button class="w-full mt-3 bg-primary text-white py-2 rounded-lg text-sm font-medium hover:bg-primary600 transition-colors">
+                            ${state.cta || 'Daha Fazla Bilgi'}
+                        </button>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                        <div class="flex items-center space-x-3">
+                            <button class="text-sm text-primary hover:text-primary600 font-medium">Düzenle</button>
+                            <button class="text-sm text-muted hover:text-text">Kopyala</button>
+                        </div>
+                        
+                        <div class="flex items-center space-x-2 text-sm text-muted">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                            <span>${adset.estimatedReach}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function initAssets() {
+            const assetsButton = document.getElementById('assets-button');
+            const fileInput = document.getElementById('file-input');
+            const assetsCount = document.getElementById('assets-count');
+            
+            assetsButton.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', function(e) {
+                const files = e.target.files;
+                if (files.length > 0) {
+                    const currentCount = parseInt(assetsCount.textContent);
+                    const newCount = currentCount + files.length;
+                    assetsCount.textContent = newCount;
+                    
+                    saveState({ assetsCount: newCount });
+                    showToast(`${files.length} dosya yüklendi!`, 'success');
+                }
+            });
+            
+            // Load saved assets count
+            if (state.assetsCount) {
+                assetsCount.textContent = state.assetsCount;
+            }
+        }
+        
+        function renderPerformanceChart() {
+            const container = document.getElementById('performance-chart-container');
+            if (!container) return;
+            
+            const budget = state.budget || 30;
+            const metrics = window.AppData ? 
+                window.AppData.generatePerformanceMetrics(budget) : 
+                {
+                    reach: { min: 976900, max: 1465400 },
+                    impressions: { min: 175000, max: 262500 },
+                    clicks: { min: 5250, max: 7875 },
+                    conversions: { min: 210, max: 392 }
+                };
+            
+            if (window.ChartHelpers && window.ChartHelpers.renderPerformanceChart) {
+                window.ChartHelpers.renderPerformanceChart('performance-chart-container', metrics);
+            }
+        }
+        
+        // Global function to update performance metrics
+        window.updatePerformanceMetrics = function(budget) {
+            const metrics = window.AppData ? 
+                window.AppData.generatePerformanceMetrics(budget) : 
+                {
+                    reach: { min: 976900, max: 1465400 },
+                    impressions: { min: 175000, max: 262500 },
+                    clicks: { min: 5250, max: 7875 },
+                    conversions: { min: 210, max: 392 }
+                };
+            
+            // Update metric displays
+            const reachEl = document.getElementById('metric-reach');
+            const impressionsEl = document.getElementById('metric-impressions');
+            const clicksEl = document.getElementById('metric-clicks');
+            const conversionsEl = document.getElementById('metric-conversions');
+            
+            if (reachEl) reachEl.textContent = `${formatNumber(metrics.reach.min)} - ${formatNumber(metrics.reach.max)}`;
+            if (impressionsEl) impressionsEl.textContent = `${formatNumber(metrics.impressions.min)} - ${formatNumber(metrics.impressions.max)}`;
+            if (clicksEl) clicksEl.textContent = `${formatNumber(metrics.clicks.min)} - ${formatNumber(metrics.clicks.max)}`;
+            if (conversionsEl) conversionsEl.textContent = `${formatNumber(metrics.conversions.min)} - ${formatNumber(metrics.conversions.max)}`;
+        };
+    });
+</script>
+
+<style>
+    .tab-button {
+        border-bottom-color: transparent;
+        color: #6B7280;
+        transition: all 0.3s ease;
+    }
+    
+    .tab-button.active {
+        border-bottom-color: #7B61FF;
+        color: #7B61FF;
+    }
+    
+    .tab-button:hover {
+        color: #7B61FF;
+    }
+    
+    .adset-item {
+        transition: all 0.3s ease;
+    }
+    
+    .adset-item.selected {
+        border-color: #7B61FF;
+        background-color: rgba(123, 97, 255, 0.1);
+        box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.1);
+    }
+    
+    .goal-badge .inline-flex {
+        animation: pulse 2s infinite;
+    }
+</style>
+}
