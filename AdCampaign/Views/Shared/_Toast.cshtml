@@ -1,0 +1,99 @@
+<!-- Toast Component -->
+<div id="toast-template" class="hidden">
+    <div class="toast-item max-w-sm w-full bg-white shadow-lg rounded-xl2 pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden transform transition-all duration-300">
+        <div class="p-4">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg class="toast-icon w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <!-- Icon will be set dynamically -->
+                    </svg>
+                </div>
+                <div class="ml-3 w-0 flex-1 pt-0.5">
+                    <p class="toast-message text-sm font-medium text-gray-900"></p>
+                </div>
+                <div class="ml-4 flex-shrink-0 flex">
+                    <button class="toast-close bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                        <span class="sr-only">Kapat</span>
+                        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showToast(message, type = 'info', duration = 5000) {
+        const container = document.getElementById('toast-container');
+        const template = document.getElementById('toast-template');
+        
+        if (!container || !template) return;
+        
+        // Clone the template
+        const toast = template.querySelector('.toast-item').cloneNode(true);
+        const messageEl = toast.querySelector('.toast-message');
+        const iconEl = toast.querySelector('.toast-icon');
+        const closeBtn = toast.querySelector('.toast-close');
+        
+        // Set message
+        messageEl.textContent = message;
+        
+        // Set icon and colors based on type
+        const iconColors = {
+            success: 'text-green-500',
+            error: 'text-red-500',
+            warning: 'text-yellow-500',
+            info: 'text-blue-500'
+        };
+        
+        const icons = {
+            success: 'M5 13l4 4L19 7',
+            error: 'M6 18L18 6M6 6l12 12',
+            warning: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z',
+            info: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+        };
+        
+        iconEl.className = `toast-icon w-6 h-6 ${iconColors[type] || iconColors.info}`;
+        iconEl.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${icons[type] || icons.info}"></path>`;
+        
+        // Add close functionality
+        closeBtn.addEventListener('click', () => {
+            removeToast(toast);
+        });
+        
+        // Add toast to container
+        container.appendChild(toast);
+        
+        // Animate in
+        setTimeout(() => {
+            toast.style.transform = 'translateX(0)';
+            toast.style.opacity = '1';
+        }, 100);
+        
+        // Auto remove after duration
+        if (duration > 0) {
+            setTimeout(() => {
+                removeToast(toast);
+            }, duration);
+        }
+    }
+    
+    function removeToast(toast) {
+        toast.style.transform = 'translateX(100%)';
+        toast.style.opacity = '0';
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 300);
+    }
+    
+    // Global toast functions
+    window.showToast = showToast;
+    window.showSuccess = (message) => showToast(message, 'success');
+    window.showError = (message) => showToast(message, 'error');
+    window.showWarning = (message) => showToast(message, 'warning');
+    window.showInfo = (message) => showToast(message, 'info');
+</script>

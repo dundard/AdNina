@@ -1,0 +1,115 @@
+<!-- Ad Set Card Component -->
+@model dynamic
+
+<div class="bg-white rounded-xl2 shadow-card p-6 card-hover" data-adset-id="@Model?.Id">
+    <div class="flex items-start justify-between mb-4">
+        <div class="flex-1">
+            <h3 class="text-lg font-semibold text-text heading">@(Model?.Title ?? "Reklam Seti 01")</h3>
+            <div class="flex items-center space-x-4 mt-2 text-sm text-muted">
+                <span>Yaş: @(Model?.Age ?? "40-65")</span>
+                <span>•</span>
+                <span>Cinsiyet: @(Model?.Gender ?? "Tümü")</span>
+                <span>•</span>
+                <span>Konum: @(Model?.Location ?? "İstanbul")</span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <span class="text-sm text-muted">Günlük:</span>
+            <span class="text-lg font-semibold text-text">$@(Model?.DailySpend ?? "6")</span>
+        </div>
+    </div>
+    
+    <!-- Audience Description -->
+    <div class="mb-4">
+        <h4 class="text-sm font-medium text-text mb-2">Hedef Kitle Açıklaması</h4>
+        <p class="text-sm text-muted">
+            @(Model?.AudienceDescription ?? "40-65 yaş arası, göz sağlığı ile ilgilenen, premium sağlık hizmetlerine yönelen, orta-üst gelir seviyesinde bireyler.")
+        </p>
+    </div>
+    
+    <!-- Ad Copy -->
+    <div class="mb-4">
+        <h4 class="text-sm font-medium text-text mb-2">Reklam Metni</h4>
+        <div class="bg-gray-50 rounded-lg p-3">
+            <p class="text-sm text-text font-medium mb-1">@(Model?.Headline ?? "Akıllı Lens ile Gözlükten Kurtulun! 🥽✨")</p>
+            <p class="text-sm text-muted">@(Model?.Body ?? "Göz içi mercek ameliyatı ile hayatınızı değiştirin. Uzman doktorlarımızla ücretsiz konsültasyon için hemen başvurun.")</p>
+        </div>
+    </div>
+    
+    <!-- Tags -->
+    <div class="mb-4">
+        <div class="flex flex-wrap gap-2">
+            @if (Model?.Tags != null)
+            {
+                @foreach (var tag in Model.Tags)
+                {
+                    <span class="tag-pill px-2 py-1 rounded-full text-xs font-medium">@tag</span>
+                }
+            }
+            else
+            {
+                <span class="tag-pill px-2 py-1 rounded-full text-xs font-medium">#akillilens</span>
+                <span class="tag-pill px-2 py-1 rounded-full text-xs font-medium">#gozsagligi</span>
+                <span class="tag-pill px-2 py-1 rounded-full text-xs font-medium">#gozluksuz</span>
+            }
+        </div>
+    </div>
+    
+    <!-- Post Preview -->
+    <div class="border border-gray-200 rounded-lg p-3">
+        <div class="flex items-center space-x-3 mb-3">
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                <span class="text-white text-xs font-semibold">AL</span>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-text">Akıllı Lens Merkezi</p>
+                <p class="text-xs text-muted">Sponsorlu</p>
+            </div>
+        </div>
+        
+        <!-- Mock image placeholder -->
+        <div class="w-full h-32 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg mb-3 flex items-center justify-center">
+            <svg class="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+        </div>
+        
+        <p class="text-sm text-text">@(Model?.Body ?? "Göz içi mercek ameliyatı ile hayatınızı değiştirin. Uzman doktorlarımızla ücretsiz konsültasyon için hemen başvurun.")</p>
+        
+        <button class="w-full mt-3 bg-primary text-white py-2 rounded-lg text-sm font-medium hover:bg-primary600 transition-colors">
+            @(Model?.CTA ?? "Daha Fazla Bilgi")
+        </button>
+    </div>
+    
+    <!-- Actions -->
+    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+        <div class="flex items-center space-x-3">
+            <button class="text-sm text-primary hover:text-primary600 font-medium">Düzenle</button>
+            <button class="text-sm text-muted hover:text-text">Kopyala</button>
+        </div>
+        
+        <div class="flex items-center space-x-2 text-sm text-muted">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+            </svg>
+            <span>@(Model?.EstimatedReach ?? "1.2K - 3.5K")</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    // React enhancement for ad set cards
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add any React enhancements here if needed
+        const adsetCards = document.querySelectorAll('[data-adset-id]');
+        adsetCards.forEach(card => {
+            // Add click handlers, drag functionality, etc.
+            card.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') return; // Don't trigger for buttons
+                // Handle card selection
+                console.log('AdSet selected:', card.dataset.adsetId);
+            });
+        });
+    });
+</script>

@@ -1,0 +1,356 @@
+@{
+    ViewData["Title"] = "Site Analizi";
+}
+
+<!-- Analyze Page - Analysis Flow (002) -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column - Progress Checklist -->
+        <div class="lg:col-span-4">
+            <div class="bg-white rounded-xl2 shadow-card p-6 sticky top-24">
+                <h2 class="heading text-xl font-semibold text-text mb-6">
+                    Analiz Süreci
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="checklist-item" data-step="1">
+                        <div class="flex items-center space-x-3">
+                            <div class="checklist-icon">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="checklist-text">Site Erişimi Kontrol Ediliyor</span>
+                        </div>
+                    </div>
+                    
+                    <div class="checklist-item" data-step="2">
+                        <div class="flex items-center space-x-3">
+                            <div class="checklist-icon">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="checklist-text">İçerik Analizi Yapılıyor</span>
+                        </div>
+                    </div>
+                    
+                    <div class="checklist-item" data-step="3">
+                        <div class="flex items-center space-x-3">
+                            <div class="checklist-icon">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="checklist-text">Hedef Kitle Belirleniyor</span>
+                        </div>
+                    </div>
+                    
+                    <div class="checklist-item" data-step="4">
+                        <div class="flex items-center space-x-3">
+                            <div class="checklist-icon">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="checklist-text">Rakip Analizi</span>
+                        </div>
+                    </div>
+                    
+                    <div class="checklist-item" data-step="5">
+                        <div class="flex items-center space-x-3">
+                            <div class="checklist-icon">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="checklist-text">SEO & Teknik Değerlendirme</span>
+                        </div>
+                    </div>
+                    
+                    <div class="checklist-item" data-step="6">
+                        <div class="flex items-center space-x-3">
+                            <div class="checklist-icon">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="checklist-text">Reklam Stratejisi Oluşturuluyor</span>
+                        </div>
+                    </div>
+                    
+                    <div class="checklist-item" data-step="7">
+                        <div class="flex items-center space-x-3">
+                            <div class="checklist-icon">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="checklist-text">Analiz Tamamlandı</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="mt-6">
+                    <div class="flex justify-between text-sm text-muted mb-2">
+                        <span>İlerleme</span>
+                        <span id="progress-text">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="progress-bar" class="bg-primary h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column - Analysis Results -->
+        <div class="lg:col-span-8 space-y-6">
+            
+            <!-- Site Preview Card -->
+            <div class="bg-white rounded-xl2 shadow-card p-6">
+                <div class="flex items-start space-x-4">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl2 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="heading text-lg font-semibold text-text mb-2">
+                            Siteniz Analiz Ediliyor...
+                        </h3>
+                        <p class="text-muted mb-4" id="site-url">
+                            <!-- URL will be populated by JS -->
+                        </p>
+                        <div id="analysis-status" class="text-sm text-primary font-medium">
+                            Checking out what's your page…
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Analysis Results -->
+            <div id="analysis-results" class="space-y-6" style="display: none;">
+                
+                <!-- First Analysis Card -->
+                <div class="analysis-card bg-white rounded-xl2 shadow-card p-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="heading text-lg font-semibold text-text mb-3">
+                                Güçlü Yönler
+                            </h4>
+                            <p class="text-muted leading-relaxed" id="analysis-card-1">
+                                <!-- Content will be populated by JS -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Second Analysis Card -->
+                <div class="analysis-card bg-white rounded-xl2 shadow-card p-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="heading text-lg font-semibold text-text mb-3">
+                                İyileştirme Önerileri
+                            </h4>
+                            <p class="text-muted leading-relaxed" id="analysis-card-2">
+                                <!-- Content will be populated by JS -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Third Analysis Card -->
+                <div class="analysis-card bg-white rounded-xl2 shadow-card p-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="heading text-lg font-semibold text-text mb-3">
+                                Strategic Summary
+                            </h4>
+                            <p class="text-muted leading-relaxed" id="analysis-card-3">
+                                <!-- Content will be populated by JS -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Loading Skeleton -->
+            <div id="analysis-skeleton">
+                <!-- React skeleton components will be mounted here -->
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script type="text/babel">
+    // Mount skeleton loader
+    const skeletonRoot = ReactDOM.createRoot(document.getElementById('analysis-skeleton'));
+    skeletonRoot.render(<SkeletonAnalysis />);
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const state = loadState();
+        const siteUrlEl = document.getElementById('site-url');
+        const analysisStatusEl = document.getElementById('analysis-status');
+        const analysisResults = document.getElementById('analysis-results');
+        const analysisSkeleton = document.getElementById('analysis-skeleton');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        
+        // Display the URL being analyzed
+        if (state.url && siteUrlEl) {
+            siteUrlEl.textContent = state.url;
+        }
+        
+        // Simulate analysis progress
+        let currentStep = 0;
+        const totalSteps = 7;
+        const stepDuration = 800; // ms per step
+        
+        function updateProgress() {
+            if (currentStep <= totalSteps) {
+                // Update progress bar
+                const percentage = Math.round((currentStep / totalSteps) * 100);
+                progressBar.style.width = percentage + '%';
+                progressText.textContent = percentage + '%';
+                
+                // Update checklist items
+                const items = document.querySelectorAll('.checklist-item');
+                items.forEach((item, index) => {
+                    const icon = item.querySelector('.checklist-icon');
+                    const text = item.querySelector('.checklist-text');
+                    
+                    if (index < currentStep) {
+                        // Completed
+                        icon.className = 'checklist-icon w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center';
+                        text.className = 'checklist-text text-text font-medium';
+                    } else if (index === currentStep) {
+                        // Active
+                        icon.className = 'checklist-icon w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center animate-pulse';
+                        text.className = 'checklist-text text-primary font-medium';
+                    } else {
+                        // Pending
+                        icon.className = 'checklist-icon w-6 h-6 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center';
+                        text.className = 'checklist-text text-muted';
+                    }
+                });
+                
+                // Update status message
+                const statusMessages = [
+                    'Site erişimi kontrol ediliyor...',
+                    'İçerik yapısı analiz ediliyor...',
+                    'Hedef kitle demografisi belirleniyor...',
+                    'Rakip siteler araştırılıyor...',
+                    'SEO ve teknik performans değerlendiriliyor...',
+                    'Reklam stratejisi oluşturuluyor...',
+                    'Analiz tamamlandı!'
+                ];
+                
+                if (currentStep < statusMessages.length) {
+                    analysisStatusEl.textContent = statusMessages[currentStep];
+                }
+                
+                currentStep++;
+                
+                if (currentStep <= totalSteps) {
+                    setTimeout(updateProgress, stepDuration);
+                } else {
+                    // Analysis complete - show results
+                    showAnalysisResults();
+                }
+            }
+        }
+        
+        function showAnalysisResults() {
+            // Hide skeleton
+            analysisSkeleton.style.display = 'none';
+            
+            // Update status
+            analysisStatusEl.textContent = 'Analiz tamamlandı! Sonuçlarınız aşağıda.';
+            
+            // Populate analysis cards with data
+            if (window.AppData && window.AppData.analysis) {
+                const cards = window.AppData.analysis.cards;
+                document.getElementById('analysis-card-1').textContent = cards[0];
+                document.getElementById('analysis-card-2').textContent = cards[1];
+                document.getElementById('analysis-card-3').textContent = cards[2];
+            }
+            
+            // Show results with animation
+            analysisResults.style.display = 'block';
+            
+            // Animate cards in sequence
+            const cards = analysisResults.querySelectorAll('.analysis-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+            
+            // Save analysis to state
+            if (window.AppData && window.AppData.analysis) {
+                saveState({ 
+                    analysis: window.AppData.analysis,
+                    analysisCompleted: true,
+                    analyzedAt: new Date().toISOString()
+                });
+            }
+            
+            // Enable next button after a delay
+            setTimeout(() => {
+                showToast('Analiz tamamlandı! Kurulum aşamasına geçebilirsiniz.', 'success');
+            }, 1500);
+        }
+        
+        // Start the analysis simulation
+        setTimeout(updateProgress, 500);
+        
+        // If analysis was already completed (refresh), skip simulation
+        if (state.analysisCompleted) {
+            currentStep = totalSteps + 1;
+            showAnalysisResults();
+        }
+    });
+</script>
+
+<style>
+    .checklist-item {
+        transition: all 0.3s ease;
+    }
+    
+    .checklist-icon svg {
+        transition: all 0.3s ease;
+    }
+    
+    .analysis-card {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+</style>
+}

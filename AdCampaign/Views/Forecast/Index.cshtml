@@ -1,0 +1,433 @@
+@{
+    ViewData["Title"] = "Performans Tahmini";
+}
+
+<!-- Forecast Page - Forecast & Performance (004-2) -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="heading text-2xl font-bold text-text" id="project-title">
+                <!-- Project name will be populated by JS -->
+            </h1>
+            <div class="flex items-center space-x-3 mt-2">
+                <span class="goal-badge" id="goal-badge">
+                    <!-- Goal badge will be populated by JS -->
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Daily Budget Section -->
+    <div class="bg-white rounded-xl2 shadow-card p-6 mb-8">
+        <h2 class="heading text-xl font-semibold text-text mb-6">
+            Günlük Bütçe
+        </h2>
+        
+        <!-- Budget Slider Component -->
+        <div id="budget-slider-container"></div>
+    </div>
+    
+    <!-- Estimated Reach Section -->
+    <div class="bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl2 p-8 mb-8 border border-primary/20">
+        <div class="text-center">
+            <h2 class="heading text-2xl font-bold text-text mb-4">
+                Tahmini Erişim
+            </h2>
+            <div class="text-4xl md:text-5xl font-bold text-primary mb-2" id="estimated-reach">
+                <!-- Will be populated by JS -->
+            </div>
+            <p class="text-muted">
+                14 günlük kampanya süresince ulaşılması beklenen kişi sayısı
+            </p>
+        </div>
+    </div>
+    
+    <!-- Forecast Charts Section -->
+    <div class="mb-8">
+        <div id="forecast-charts-container"></div>
+    </div>
+    
+    <!-- Performance Metrics Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl2 shadow-card p-6">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-12 h-12 bg-blue-100 rounded-xl2 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="heading text-lg font-semibold text-text">Gösterim</h3>
+                    <p class="text-sm text-muted">Toplam gösterim sayısı</p>
+                </div>
+            </div>
+            <div class="text-2xl font-bold text-text" id="metric-impressions">
+                <!-- Will be populated by JS -->
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl2 shadow-card p-6">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-12 h-12 bg-green-100 rounded-xl2 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="heading text-lg font-semibold text-text">Tıklanma</h3>
+                    <p class="text-sm text-muted">Toplam tık sayısı</p>
+                </div>
+            </div>
+            <div class="text-2xl font-bold text-text" id="metric-clicks">
+                <!-- Will be populated by JS -->
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl2 shadow-card p-6">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-12 h-12 bg-yellow-100 rounded-xl2 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="heading text-lg font-semibold text-text">Tık Oranı</h3>
+                    <p class="text-sm text-muted">CTR performansı</p>
+                </div>
+            </div>
+            <div class="text-2xl font-bold text-text" id="metric-ctr">
+                3.0%
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl2 shadow-card p-6">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-12 h-12 bg-purple-100 rounded-xl2 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="heading text-lg font-semibold text-text">Dönüşüm</h3>
+                    <p class="text-sm text-muted">Toplam dönüşüm</p>
+                </div>
+            </div>
+            <div class="text-2xl font-bold text-text" id="metric-conversions">
+                <!-- Will be populated by JS -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Campaign Summary -->
+    <div class="bg-white rounded-xl2 shadow-card p-6 mb-8">
+        <h3 class="heading text-xl font-semibold text-text mb-6">
+            Kampanya Özeti
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="space-y-3">
+                <h4 class="font-medium text-text">Kampanya Bilgileri</h4>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-muted">Süre:</span>
+                        <span class="text-text font-medium">14 gün</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-muted">Günlük Bütçe:</span>
+                        <span class="text-text font-medium" id="summary-daily-budget">$30</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-muted">Toplam Bütçe:</span>
+                        <span class="text-text font-medium" id="summary-total-budget">$420</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-3">
+                <h4 class="font-medium text-text">Hedefleme</h4>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-muted">Lokasyon:</span>
+                        <span class="text-text font-medium" id="summary-locations">Turkey, Istanbul</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-muted">Hedef:</span>
+                        <span class="text-text font-medium" id="summary-goal">Web Sitesi Trafiği</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-muted">Reklam Setleri:</span>
+                        <span class="text-text font-medium">5 adet</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-3">
+                <h4 class="font-medium text-text">Beklenen Sonuçlar</h4>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-muted">Maliyet/Tık:</span>
+                        <span class="text-text font-medium" id="summary-cpc">$0.07</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-muted">Maliyet/Dönüşüm:</span>
+                        <span class="text-text font-medium" id="summary-cpa">$1.50</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-muted">ROAS:</span>
+                        <span class="text-text font-medium text-green-600">4.2x</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ROI Projection -->
+    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl2 p-6 border border-green-200">
+        <div class="flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                </svg>
+            </div>
+            <h3 class="heading text-lg font-semibold text-green-900">
+                Yatırım Getirisi Projeksiyonu
+            </h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center">
+                <div class="text-2xl font-bold text-green-900" id="roi-investment">$420</div>
+                <div class="text-sm text-green-700">Toplam Yatırım</div>
+            </div>
+            <div class="text-center">
+                <div class="text-2xl font-bold text-green-900" id="roi-return">$1,764</div>
+                <div class="text-sm text-green-700">Beklenen Getiri</div>
+            </div>
+            <div class="text-center">
+                <div class="text-2xl font-bold text-green-900" id="roi-profit">+$1,344</div>
+                <div class="text-sm text-green-700">Net Kâr</div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+@section Scripts {
+<script type="text/babel">
+    // Mount Budget Slider Component
+    const budgetSliderRoot = ReactDOM.createRoot(document.getElementById('budget-slider-container'));
+    
+    function BudgetSliderWrapper() {
+        const [budget, setBudget] = React.useState(30);
+        
+        React.useEffect(() => {
+            const state = loadState();
+            if (state.budget) {
+                setBudget(state.budget);
+            }
+        }, []);
+        
+        const handleBudgetChange = (newBudget) => {
+            setBudget(newBudget);
+            // Update all metrics and charts when budget changes
+            updateAllMetrics(newBudget);
+        };
+        
+        return (
+            <BudgetSlider 
+                value={budget}
+                onChange={handleBudgetChange}
+                showCurrency={true}
+            />
+        );
+    }
+    
+    budgetSliderRoot.render(<BudgetSliderWrapper />);
+    
+    // Mount Forecast Charts Component
+    const forecastChartsRoot = ReactDOM.createRoot(document.getElementById('forecast-charts-container'));
+    
+    function ForecastChartsWrapper() {
+        const [budget, setBudget] = React.useState(30);
+        
+        React.useEffect(() => {
+            const state = loadState();
+            if (state.budget) {
+                setBudget(state.budget);
+            }
+            
+            // Listen for budget changes
+            window.addEventListener('stateChanged', function(e) {
+                if (e.detail.newState.budget !== undefined) {
+                    setBudget(e.detail.newState.budget);
+                }
+            });
+        }, []);
+        
+        return (
+            <ForecastCharts budget={budget} />
+        );
+    }
+    
+    forecastChartsRoot.render(<ForecastChartsWrapper />);
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const state = loadState();
+        
+        // Initialize page
+        initHeader();
+        updateAllMetrics(state.budget || 30);
+        
+        function initHeader() {
+            // Set project title
+            const titleEl = document.getElementById('project-title');
+            if (titleEl && state.projectName) {
+                titleEl.textContent = state.projectName;
+            }
+            
+            // Set goal badge
+            const badgeEl = document.getElementById('goal-badge');
+            if (badgeEl && state.goal) {
+                const goalInfo = getGoalInfo(state.goal);
+                badgeEl.innerHTML = `
+                    <span class="inline-flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
+                        <span>${goalInfo.icon}</span>
+                        <span>${goalInfo.label}</span>
+                    </span>
+                `;
+            }
+        }
+        
+        function getGoalInfo(goal) {
+            const goals = {
+                'Traffic': { icon: '🌐', label: 'Web Sitesi Trafiği' },
+                'Leads': { icon: '📧', label: 'Potansiyel Müşteri' },
+                'Sales': { icon: '💰', label: 'Satış' }
+            };
+            return goals[goal] || goals['Traffic'];
+        }
+        
+        // Global function to update all metrics
+        window.updateAllMetrics = function(budget) {
+            updateEstimatedReach(budget);
+            updatePerformanceMetrics(budget);
+            updateCampaignSummary(budget);
+            updateROIProjection(budget);
+        };
+        
+        function updateEstimatedReach(budget) {
+            const reach = window.AppData ? 
+                window.AppData.getEstimatedReach(budget) : 
+                { min: 976900, max: 1465400 };
+            
+            const reachEl = document.getElementById('estimated-reach');
+            if (reachEl) {
+                reachEl.textContent = `${formatNumber(reach.min)} - ${formatNumber(reach.max)}`;
+            }
+        }
+        
+        function updatePerformanceMetrics(budget) {
+            const metrics = window.AppData ? 
+                window.AppData.generatePerformanceMetrics(budget) : 
+                {
+                    impressions: { min: 175000, max: 262500 },
+                    clicks: { min: 5250, max: 7875 },
+                    conversions: { min: 210, max: 392 }
+                };
+            
+            // Update metric displays
+            const impressionsEl = document.getElementById('metric-impressions');
+            const clicksEl = document.getElementById('metric-clicks');
+            const conversionsEl = document.getElementById('metric-conversions');
+            
+            if (impressionsEl) impressionsEl.textContent = `${formatNumber(metrics.impressions.min)} - ${formatNumber(metrics.impressions.max)}`;
+            if (clicksEl) clicksEl.textContent = `${formatNumber(metrics.clicks.min)} - ${formatNumber(metrics.clicks.max)}`;
+            if (conversionsEl) conversionsEl.textContent = `${formatNumber(metrics.conversions.min)} - ${formatNumber(metrics.conversions.max)}`;
+        }
+        
+        function updateCampaignSummary(budget) {
+            const totalBudget = budget * 14;
+            
+            // Update budget displays
+            const dailyBudgetEl = document.getElementById('summary-daily-budget');
+            const totalBudgetEl = document.getElementById('summary-total-budget');
+            
+            if (dailyBudgetEl) dailyBudgetEl.textContent = `$${budget}`;
+            if (totalBudgetEl) totalBudgetEl.textContent = `$${totalBudget}`;
+            
+            // Update locations
+            const locationsEl = document.getElementById('summary-locations');
+            if (locationsEl && state.locations) {
+                locationsEl.textContent = state.locations.join(', ');
+            }
+            
+            // Update goal
+            const goalEl = document.getElementById('summary-goal');
+            if (goalEl && state.goal) {
+                const goalInfo = getGoalInfo(state.goal);
+                goalEl.textContent = goalInfo.label;
+            }
+            
+            // Calculate and update costs
+            const avgClicks = 6000; // Average clicks estimate
+            const avgConversions = 280; // Average conversions estimate
+            
+            const cpc = totalBudget / avgClicks;
+            const cpa = totalBudget / avgConversions;
+            
+            const cpcEl = document.getElementById('summary-cpc');
+            const cpaEl = document.getElementById('summary-cpa');
+            
+            if (cpcEl) cpcEl.textContent = `$${cpc.toFixed(2)}`;
+            if (cpaEl) cpaEl.textContent = `$${cpa.toFixed(2)}`;
+        }
+        
+        function updateROIProjection(budget) {
+            const totalBudget = budget * 14;
+            const expectedReturn = totalBudget * 4.2; // 4.2x ROAS
+            const netProfit = expectedReturn - totalBudget;
+            
+            const investmentEl = document.getElementById('roi-investment');
+            const returnEl = document.getElementById('roi-return');
+            const profitEl = document.getElementById('roi-profit');
+            
+            if (investmentEl) investmentEl.textContent = `$${totalBudget.toLocaleString()}`;
+            if (returnEl) returnEl.textContent = `$${Math.round(expectedReturn).toLocaleString()}`;
+            if (profitEl) profitEl.textContent = `+$${Math.round(netProfit).toLocaleString()}`;
+        }
+    });
+</script>
+
+<style>
+    .goal-badge .inline-flex {
+        animation: pulse 2s infinite;
+    }
+    
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: .8;
+        }
+    }
+    
+    /* Smooth transitions for metric updates */
+    #estimated-reach,
+    #metric-impressions,
+    #metric-clicks,
+    #metric-conversions,
+    #summary-daily-budget,
+    #summary-total-budget,
+    #roi-investment,
+    #roi-return,
+    #roi-profit {
+        transition: all 0.3s ease;
+    }
+</style>
+}
