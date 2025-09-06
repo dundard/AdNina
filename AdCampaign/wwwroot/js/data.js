@@ -123,17 +123,127 @@ export const forecast = {
     ]
 };
 
+// Enhanced location data with countries and cities
+export const locationData = {
+    countries: [
+        {
+            code: 'TR',
+            name: 'Turkey',
+            cities: [
+                'Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya', 'Adana', 
+                'Konya', 'Gaziantep', 'Kayseri', 'Eskisehir', 'Diyarbakir', 
+                'Samsun', 'Denizli', 'Adapazari', 'Malatya', 'Kahramanmaras',
+                'Erzurum', 'Van', 'Batman', 'Elazig', 'Trabzon', 'Kocaeli',
+                'Manisa', 'Balikesir', 'Aydin', 'Tekirdag', 'Afyon', 'Isparta',
+                'Canakkale', 'Kütahya', 'Edirne', 'Mugla', 'Ordu', 'Giresun'
+            ]
+        },
+        {
+            code: 'US',
+            name: 'United States',
+            cities: [
+                'New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix',
+                'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose',
+                'Austin', 'Jacksonville', 'Fort Worth', 'Columbus', 'Charlotte',
+                'San Francisco', 'Indianapolis', 'Seattle', 'Denver', 'Washington DC'
+            ]
+        },
+        {
+            code: 'DE',
+            name: 'Germany',
+            cities: [
+                'Berlin', 'Hamburg', 'Munich', 'Cologne', 'Frankfurt',
+                'Stuttgart', 'Düsseldorf', 'Dortmund', 'Essen', 'Leipzig',
+                'Bremen', 'Dresden', 'Hanover', 'Nuremberg', 'Duisburg'
+            ]
+        },
+        {
+            code: 'FR',
+            name: 'France',
+            cities: [
+                'Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice',
+                'Nantes', 'Strasbourg', 'Montpellier', 'Bordeaux', 'Lille',
+                'Rennes', 'Reims', 'Le Havre', 'Saint-Étienne', 'Toulon'
+            ]
+        },
+        {
+            code: 'GB',
+            name: 'United Kingdom',
+            cities: [
+                'London', 'Birmingham', 'Manchester', 'Glasgow', 'Liverpool',
+                'Edinburgh', 'Leeds', 'Sheffield', 'Bristol', 'Cardiff',
+                'Leicester', 'Coventry', 'Bradford', 'Belfast', 'Nottingham'
+            ]
+        },
+        {
+            code: 'IT',
+            name: 'Italy',
+            cities: [
+                'Rome', 'Milan', 'Naples', 'Turin', 'Palermo',
+                'Genoa', 'Bologna', 'Florence', 'Bari', 'Catania',
+                'Venice', 'Verona', 'Messina', 'Padua', 'Trieste'
+            ]
+        },
+        {
+            code: 'ES',
+            name: 'Spain',
+            cities: [
+                'Madrid', 'Barcelona', 'Valencia', 'Seville', 'Zaragoza',
+                'Málaga', 'Murcia', 'Palma', 'Las Palmas', 'Bilbao',
+                'Alicante', 'Córdoba', 'Valladolid', 'Vigo', 'Gijón'
+            ]
+        },
+        {
+            code: 'NL',
+            name: 'Netherlands',
+            cities: [
+                'Amsterdam', 'Rotterdam', 'The Hague', 'Utrecht', 'Eindhoven',
+                'Tilburg', 'Groningen', 'Almere', 'Breda', 'Nijmegen'
+            ]
+        },
+        {
+            code: 'BE',
+            name: 'Belgium',
+            cities: [
+                'Brussels', 'Antwerp', 'Ghent', 'Charleroi', 'Liège',
+                'Bruges', 'Namur', 'Leuven', 'Mons', 'Aalst'
+            ]
+        },
+        {
+            code: 'GR',
+            name: 'Greece',
+            cities: [
+                'Athens', 'Thessaloniki', 'Patras', 'Piraeus', 'Larissa',
+                'Heraklion', 'Peristeri', 'Kallithea', 'Acharnes', 'Kalamaria'
+            ]
+        },
+        {
+            code: 'AE',
+            name: 'United Arab Emirates',
+            cities: [
+                'Dubai', 'Abu Dhabi', 'Sharjah', 'Al Ain', 'Ajman',
+                'Ras Al Khaimah', 'Fujairah', 'Umm Al Quwain'
+            ]
+        },
+        {
+            code: 'SA',
+            name: 'Saudi Arabia',
+            cities: [
+                'Riyadh', 'Jeddah', 'Mecca', 'Medina', 'Dammam',
+                'Khobar', 'Tabuk', 'Buraidah', 'Khamis Mushait', 'Hail'
+            ]
+        }
+    ]
+};
+
+// Legacy locations array for backward compatibility
 export const locations = [
-    'Turkey',
-    'Istanbul', 
-    'Ankara',
-    'Izmir',
-    'Bursa',
-    'Antalya',
-    'Adana',
-    'Konya',
-    'Gaziantep',
-    'Kayseri'
+    'Turkey', 'Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya',
+    'Adana', 'Konya', 'Gaziantep', 'Kayseri',
+    'United States', 'New York', 'Los Angeles', 'Chicago',
+    'Germany', 'Berlin', 'Hamburg', 'Munich',
+    'France', 'Paris', 'Marseille', 'Lyon',
+    'United Kingdom', 'London', 'Birmingham', 'Manchester'
 ];
 
 export const goals = [
@@ -142,15 +252,68 @@ export const goals = [
     { value: 'Sales', label: 'Satış', icon: '💰' }
 ];
 
-export const ctaOptions = [
-    'Daha Fazla Bilgi',
-    'Ücretsiz Konsültasyon',
-    'Randevu Al',
-    'Hemen Ara',
-    'WhatsApp ile İletişim',
-    'Broşür İndir',
-    'Video İzle',
-    'Test Sonuçlarını Gör'
+// Enhanced CTA options with categories
+export const ctaOptions = {
+    consultation: [
+        'Ücretsiz Konsültasyon',
+        'Uzman Görüşü Al',
+        'Bilgi Al',
+        'Danışmanlık Hizmeti',
+        'Değerlendirme Talep Et'
+    ],
+    appointment: [
+        'Randevu Al',
+        'Hemen Randevu',
+        'Online Randevu',
+        'Muayene Randevusu',
+        'Görüşme Planla'
+    ],
+    contact: [
+        'Hemen Ara',
+        'WhatsApp ile İletişim',
+        'Mesaj Gönder',
+        'Bizi Arayın',
+        'İletişime Geç'
+    ],
+    information: [
+        'Daha Fazla Bilgi',
+        'Detayları Öğren',
+        'Broşür İndir',
+        'Katalog İndir',
+        'Rehber İndir'
+    ],
+    video: [
+        'Video İzle',
+        'Ameliyat Videosunu İzle',
+        'Hasta Deneyimlerini İzle',
+        'Süreç Videosunu İzle',
+        'Uzman Anlatımını İzle'
+    ],
+    test: [
+        'Test Sonuçlarını Gör',
+        'Uygunluk Testi Yap',
+        'Kendini Test Et',
+        'Değerlendirme Yap',
+        'Analiz Sonuçları'
+    ],
+    offer: [
+        'Özel Fırsatı Kaçırma',
+        'İndirimli Fiyat Al',
+        'Kampanyayı Değerlendir',
+        'Özel Teklif Al',
+        'Avantajlı Fiyat İçin Tıkla'
+    ]
+};
+
+// Flat array of all CTA options for easy access
+export const allCtaOptions = [
+    ...ctaOptions.consultation,
+    ...ctaOptions.appointment,
+    ...ctaOptions.contact,
+    ...ctaOptions.information,
+    ...ctaOptions.video,
+    ...ctaOptions.test,
+    ...ctaOptions.offer
 ];
 
 export const budgetScales = [
@@ -220,9 +383,11 @@ if (typeof module !== 'undefined' && module.exports) {
         analysis,
         adsets,
         forecast,
+        locationData,
         locations,
         goals,
         ctaOptions,
+        allCtaOptions,
         budgetScales,
         getScaledForecast,
         getEstimatedReach,
@@ -235,9 +400,11 @@ window.AppData = {
     analysis,
     adsets,
     forecast,
+    locationData,
     locations,
     goals,
     ctaOptions,
+    allCtaOptions,
     budgetScales,
     getScaledForecast,
     getEstimatedReach,

@@ -191,6 +191,7 @@
                             class="w-full px-4 py-3 border border-gray-300 rounded-input focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                         >
                             <option value="">Seçiniz</option>
+                            
                             <!-- Options will be populated by JS -->
                         </select>
                     </div>
@@ -275,9 +276,37 @@
             saveState({ locations: newLocations });
         };
         
-        const suggestions = window.AppData ? window.AppData.locations : [
-            'Turkey', 'Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya'
-        ];
+        // Generate suggestions from enhanced location data
+        const generateSuggestions = () => {
+            let suggestions = [];
+            
+            if (window.AppData && window.AppData.locationData) {
+                const { countries } = window.AppData.locationData;
+                
+                // Add countries
+                countries.forEach(country => {
+                    suggestions.push(country.name);
+                    
+                    // Add cities for each country
+                    country.cities.forEach(city => {
+                        suggestions.push(`${city}, ${country.name}`);
+                        suggestions.push(city); // Also add city without country for easy search
+                    });
+                });
+            }
+            
+            // Fallback to simple locations if enhanced data not available
+            if (suggestions.length === 0) {
+                suggestions = window.AppData ? window.AppData.locations : [
+                    'Turkey', 'Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya'
+                ];
+            }
+            
+            // Remove duplicates and sort
+            return [...new Set(suggestions)].sort();
+        };
+        
+        const suggestions = generateSuggestions();
         
         return (
             <TagInput 
@@ -285,6 +314,8 @@
                 onChange={handleLocationsChange}
                 suggestions={suggestions}
                 placeholder="Şehir veya ülke ekleyin..."
+                maxTags={10}
+                showCount={true}
             />
         );
     }
@@ -390,61 +421,174 @@
         
         function initCTAOptions() {
             const ctaSelect = document.getElementById('cta-select');
-            const ctaOptions = window.AppData ? window.AppData.ctaOptions : [
+            const allOptions = window.AppData ? window.AppData.allCtaOptions : [
                 'Daha Fazla Bilgi',
                 'Ücretsiz Konsültasyon',
                 'Randevu Al',
                 'Hemen Ara'
             ];
             
-            ctaOptions.forEach(option => {
-                const optionEl = document.createElement('option');
-                optionEl.value = option;
-                optionEl.textContent = option;
-                ctaSelect.appendChild(optionEl);
-            });
+            // Clear existing options except the first one
+            ctaSelect.innerHTML = '<option value="">Seçiniz</option>';
+            
+            // Group options by category if available
+            if (window.AppData && window.AppData.ctaOptions) {
+                const categories = {
+                    'Konsültasyon': window.AppData.ctaOptions.consultation,
+                    'Randevu': window.AppData.ctaOptions.appointment,
+                    'İletişim': window.AppData.ctaOptions.contact,
+                    'Bilgi': window.AppData.ctaOptions.information,
+                    'Video': window.AppData.ctaOptions.video,
+                    'Test': window.AppData.ctaOptions.test,
+                    'Özel Teklifler': window.AppData.ctaOptions.offer
+                };
+                
+                Object.keys(categories).forEach(categoryName => {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = categoryName;
+                    
+                    categories[categoryName].forEach(option => {
+                        const optionEl = document.createElement('option');
+                        optionEl.value = option;
+                        optionEl.textContent = option;
+                        optgroup.appendChild(optionEl);
+                    });
+                    
+                    ctaSelect.appendChild(optgroup);
+                });
+            } else {
+                // Fallback: simple options
+                allOptions.forEach(option => {
+                    const optionEl = document.createElement('option');
+                    optionEl.value = option;
+                    optionEl.textContent = option;
+                    ctaSelect.appendChild(optionEl);
+                });
+            }
+            
+            // Set saved value
+            if (state.cta) {
+                ctaSelect.value = state.cta;
+            }
         }
         
         function loadCompetitorsAnalysis() {
+            // Show loading state first
+            const sections = document.querySelectorAll('.analysis-section');
+            sections.forEach(section => {
+                section.style.opacity = '0.5';
+            });
+            
             if (window.AppData && window.AppData.analysis && window.AppData.analysis.competitors) {
                 const competitors = window.AppData.analysis.competitors;
                 
                 // Hot Topics
-                document.getElementById('hot-topics-content').textContent = competitors.hotTopics;
+                const hotTopicsEl = document.getElementById('hot-topics-content');
+                if (hotTopicsEl) {
+                    hotTopicsEl.textContent = competitors.hotTopics;
+                }
                 
                 // Regional Market
-                document.getElementById('regional-content').textContent = competitors.regional;
+                const regionalEl = document.getElementById('regional-content');
+                if (regionalEl) {
+                    regionalEl.textContent = competitors.regional;
+                }
                 
                 // Community Reviews
-                document.getElementById('reviews-content').textContent = competitors.reviews;
+                const reviewsEl = document.getElementById('reviews-content');
+                if (reviewsEl) {
+                    reviewsEl.textContent = competitors.reviews;
+                }
                 
                 // Consolidated Plan
-                document.getElementById('consolidated-text').textContent = competitors.consolidated.text;
+                const consolidatedEl = document.getElementById('consolidated-text');
+                if (consolidatedEl) {
+                    consolidatedEl.textContent = competitors.consolidated.text;
+                }
                 
                 // Key Insights
                 const insightsList = document.getElementById('key-insights');
-                competitors.consolidated.bullets.forEach(bullet => {
-                    const li = document.createElement('li');
-                    li.className = 'flex items-start space-x-2';
-                    li.innerHTML = `
-                        <span class="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                        <span class="text-text">${bullet}</span>
-                    `;
-                    insightsList.appendChild(li);
+                if (insightsList && competitors.consolidated.bullets) {
+                    insightsList.innerHTML = ''; // Clear existing content
+                    competitors.consolidated.bullets.forEach(bullet => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-start space-x-2 mb-2';
+                        li.innerHTML = `
+                            <span class="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
+                            <span class="text-text">${bullet}</span>
+                        `;
+                        insightsList.appendChild(li);
+                    });
+                }
+                
+                // Animate sections in with delay
+                setTimeout(() => {
+                    sections.forEach((section, index) => {
+                        setTimeout(() => {
+                            section.style.opacity = '1';
+                            section.classList.add('fade-in');
+                        }, index * 150);
+                    });
+                }, 100);
+                
+                // Show success message
+                setTimeout(() => {
+                    if (window.showToast) {
+                        showToast('Rakip analizi yüklendi!', 'success', 2000);
+                    }
+                }, sections.length * 150 + 500);
+                
+            } else {
+                // Show fallback content if no data available
+                const fallbackContent = {
+                    'hot-topics-content': 'Göz sağlığı sektöründe güncel trendler arasında minimal invaziv teknikler, kişiselleştirilmiş tedavi yaklaşımları ve teknoloji destekli ameliyat yöntemleri öne çıkıyor.',
+                    'regional-content': 'İstanbul bölgesinde göz sağlığı hizmetleri konusunda yoğun rekabet bulunuyor. Başlıca rakipler arasında özel göz hastaneleri ve klinikler yer alıyor.',
+                    'reviews-content': 'Hasta yorumları analizi gösteriyor ki başarılı ameliyat sonuçları, doktor-hasta iletişimi ve post-operatif takip kalitesi en çok değer verilen faktörler.',
+                    'consolidated-text': 'Stratejik analiz sonuçlarımıza göre, premium göz sağlığı hizmetleri pazarında güçlü bir konumunuz bulunuyor.'
+                };
+                
+                Object.keys(fallbackContent).forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = fallbackContent[id];
+                    }
                 });
                 
-                // Animate sections in
-                const sections = document.querySelectorAll('.analysis-section');
-                sections.forEach((section, index) => {
-                    section.style.opacity = '0';
-                    section.style.transform = 'translateY(20px)';
+                // Add fallback key insights
+                const insightsList = document.getElementById('key-insights');
+                if (insightsList) {
+                    const fallbackInsights = [
+                        'Uzman doktor kadronuzu ve teknolojik altyapınızı öne çıkaran güven odaklı mesajlaşma',
+                        'Hasta deneyimlerini merkeze alan sosyal kanıt stratejisi',
+                        'Yerel SEO ve lokasyon bazlı reklam optimizasyonu',
+                        'Premium hizmet algısını destekleyen görsel kimlik ve içerik stratejisi'
+                    ];
                     
-                    setTimeout(() => {
-                        section.style.transition = 'all 0.6s ease';
-                        section.style.opacity = '1';
-                        section.style.transform = 'translateY(0)';
-                    }, index * 200);
-                });
+                    insightsList.innerHTML = '';
+                    fallbackInsights.forEach(insight => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-start space-x-2 mb-2';
+                        li.innerHTML = `
+                            <span class="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
+                            <span class="text-text">${insight}</span>
+                        `;
+                        insightsList.appendChild(li);
+                    });
+                }
+                
+                // Animate sections in
+                setTimeout(() => {
+                    sections.forEach((section, index) => {
+                        setTimeout(() => {
+                            section.style.opacity = '1';
+                            section.classList.add('fade-in');
+                        }, index * 150);
+                    });
+                }, 100);
+                
+                if (window.showToast) {
+                    showToast('Örnek rakip analizi yüklendi', 'info', 2000);
+                }
             }
         }
         
@@ -454,18 +598,69 @@
             option.addEventListener('click', function() {
                 const goal = this.dataset.goal;
                 const radio = this.querySelector('input[type="radio"]');
+                
+                // Clear all selections first
+                goalOptions.forEach(opt => {
+                    opt.classList.remove('selected');
+                    opt.querySelector('input[type="radio"]').checked = false;
+                });
+                
+                // Select clicked option
                 radio.checked = true;
-                updateGoalSelection(goal);
+                this.classList.add('selected');
+                
+                // Add visual feedback
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+                
+                // Update state
                 saveState({ goal: goal });
+                
+                // Show selection feedback
+                showToast(`Hedef seçildi: ${this.querySelector('.font-medium').textContent}`, 'success', 2000);
+            });
+            
+            // Add hover effects
+            option.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('selected')) {
+                    this.style.transform = 'translateY(-2px)';
+                }
+            });
+            
+            option.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('selected')) {
+                    this.style.transform = 'translateY(0)';
+                }
             });
         });
         
         function updateGoalSelection(selectedGoal) {
             goalOptions.forEach(option => {
+                const goalLabel = option.querySelector('.goal-label');
                 if (option.dataset.goal === selectedGoal) {
                     option.classList.add('selected');
+                    option.querySelector('input[type="radio"]').checked = true;
+                    
+                    // Add checkmark icon
+                    let checkmark = option.querySelector('.goal-checkmark');
+                    if (!checkmark) {
+                        checkmark = document.createElement('div');
+                        checkmark.className = 'goal-checkmark absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center';
+                        checkmark.innerHTML = '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>';
+                        goalLabel.style.position = 'relative';
+                        goalLabel.appendChild(checkmark);
+                    }
                 } else {
                     option.classList.remove('selected');
+                    option.querySelector('input[type="radio"]').checked = false;
+                    
+                    // Remove checkmark
+                    const checkmark = option.querySelector('.goal-checkmark');
+                    if (checkmark) {
+                        checkmark.remove();
+                    }
                 }
             });
         }
@@ -490,32 +685,106 @@
     
     .goal-option {
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
     }
     
     .goal-label {
         display: block;
-        padding: 1rem;
+        padding: 1.25rem;
         border: 2px solid #E5E7EB;
         border-radius: 0.875rem;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .goal-label::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(123, 97, 255, 0.1), transparent);
+        transition: left 0.5s;
     }
     
     .goal-option:hover .goal-label {
         border-color: #7B61FF;
         background-color: rgba(123, 97, 255, 0.05);
+        box-shadow: 0 4px 12px rgba(123, 97, 255, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    .goal-option:hover .goal-label::before {
+        left: 100%;
     }
     
     .goal-option.selected .goal-label {
         border-color: #7B61FF;
-        background-color: rgba(123, 97, 255, 0.1);
-        box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.1);
+        background: linear-gradient(135deg, rgba(123, 97, 255, 0.1) 0%, rgba(123, 97, 255, 0.05) 100%);
+        box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.1), 0 8px 25px rgba(123, 97, 255, 0.2);
+        transform: translateY(-1px);
+    }
+    
+    .goal-option.selected .goal-label .font-medium {
+        color: #7B61FF;
+        font-weight: 600;
+    }
+    
+    .goal-checkmark {
+        animation: checkmarkAppear 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    @@keyframes checkmarkAppear {
+        0% {
+            opacity: 0;
+            transform: scale(0) rotate(180deg);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+    }
+    
+    .goal-option:active {
+        transform: scale(0.98);
     }
     
     .analysis-section {
-        opacity: 0;
-        transform: translateY(20px);
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 0.6s ease;
+    }
+    
+    .analysis-section.fade-in {
+        animation: fadeInSection 0.6s ease forwards;
+    }
+    
+    @@keyframes fadeInSection {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Loading skeleton */
+    .loading-skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+    }
+    
+    @@keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
     }
 </style>
 }

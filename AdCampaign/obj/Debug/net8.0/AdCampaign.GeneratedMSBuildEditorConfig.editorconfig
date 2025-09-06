@@ -9,65 +9,65 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = AdCampaign
 build_property.RootNamespace = AdCampaign
-build_property.ProjectDir = C:\_PROJECTS\_TestProjects\AdNina\AdCampaign\
+build_property.ProjectDir = C:\_PROJECTS\AdNina\AdCampaign\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\_PROJECTS\_TestProjects\AdNina\AdCampaign
+build_property.MSBuildProjectDirectory = C:\_PROJECTS\AdNina\AdCampaign
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/AdSets/Index.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/AdSets/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRTZXRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/Analyze/Index.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/Analyze/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl6ZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/Forecast/Index.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/Forecast/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRm9yZWNhc3RcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/Home/Index.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/Setup/Competitors.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/Setup/Competitors.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcQ29tcGV0aXRvcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/Setup/Summary.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/Setup/Summary.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dXBcU3VtbWFyeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/Shared/_AdSetCard.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/Shared/_AdSetCard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZFNldENhcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/Shared/_Header.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/Shared/_Header.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9IZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/Shared/_Layout.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/Shared/_Stepper.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/Shared/_Stepper.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdGVwcGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/Shared/_Toast.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/Shared/_Toast.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ub2FzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/_ViewImports.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/_PROJECTS/_TestProjects/AdNina/AdCampaign/Views/_ViewStart.cshtml]
+[C:/_PROJECTS/AdNina/AdCampaign/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

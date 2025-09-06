@@ -3,131 +3,219 @@
 }
 
 <!-- AdSets Page - Ad Sets & Budget (004-1) -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="min-h-screen bg-gray-50">
     
-    <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
-        <div>
-            <h1 class="heading text-2xl font-bold text-text" id="project-title">
-                <!-- Project name will be populated by JS -->
-            </h1>
-            <div class="flex items-center space-x-3 mt-2">
-                <span class="goal-badge" id="goal-badge">
-                    <!-- Goal badge will be populated by JS -->
-                </span>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Daily Budget Section -->
-    <div class="bg-white rounded-xl2 shadow-card p-6 mb-8">
-        <h2 class="heading text-xl font-semibold text-text mb-6">
-            Günlük Bütçe
-        </h2>
-        
-        <!-- Budget Slider Component -->
-        <div id="budget-slider-container"></div>
-    </div>
-    
-    <!-- Tabs and Content -->
-    <div class="bg-white rounded-xl2 shadow-card overflow-hidden mb-8">
-        <div class="border-b border-gray-200">
-            <nav class="flex space-x-8 px-6">
-                <button id="adsets-tab" class="tab-button active py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap">
-                    Reklam Setleri
-                </button>
-                <button id="performance-tab" class="tab-button py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap">
-                    Performans Tahmini
-                </button>
-            </nav>
-        </div>
-        
-        <div class="p-6">
-            <!-- AdSets Tab Content -->
-            <div id="adsets-content" class="tab-content">
-                
-                <!-- Assets Button -->
-                <div class="mb-6">
-                    <button id="assets-button" class="flex items-center space-x-2 px-6 py-3 border-2 border-dashed border-gray-300 rounded-xl2 hover:border-primary hover:bg-primary/5 transition-all">
-                        <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+    <!-- Navigation Header -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <button class="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
-                        <span class="text-muted font-medium">Görseller ve videolar (<span id="assets-count">10</span>)</span>
+                        <span class="font-medium">Reklam Merkezi</span>
                     </button>
                 </div>
                 
-                <!-- AdSets Grid -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gray-200 rounded-full"></div>
+                        <button class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span>Yeni Proje</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Page Header -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900" id="project-title">
+                        Akıllı Lens Ameliyatı – Göz İçi Mercek
+                    </h1>
+                    <div class="flex items-center space-x-4 mt-2 text-sm text-gray-500">
+                        <span>Başlangıç Tarihi: <span class="font-medium" id="start-date-display">2025-09-04 - 21:27:49</span></span>
+                        <span>•</span>
+                        <span>Bitiş Tarihi: <span class="font-medium" id="end-date-display">2025-09-12 - 21:27:49</span></span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                        Trafik
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Daily Budget Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h2 class="text-lg font-semibold text-gray-900">Günlük Bütçe</h2>
+                </div>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Budget Description -->
+                <p class="text-sm text-gray-600">
+                    İçin optimize edilmiş bütçe <span class="font-semibold text-gray-900">Healthcare</span>, Binlerce kampanyaya dayalı olarak <span class="font-semibold text-gray-900">TR</span>
+                </p>
+                
+                <!-- Budget Input and Slider -->
+                <div id="budget-slider-container"></div>
+                
+                <!-- Budget Message -->
+                <div class="bg-blue-50 rounded-lg p-4 flex items-center space-x-3">
+                    <div class="flex-shrink-0">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <p class="text-sm text-blue-800 font-medium">
+                        Your budget works - more budget, better results!
+                    </p>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Tabs Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-8">
+            <div class="border-b border-gray-200">
+                <nav class="flex">
+                    <button id="adsets-tab" class="tab-button active flex-1 px-6 py-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
+                        <div class="flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                            <span>Reklam Setleri</span>
+                        </div>
+                    </button>
+                    <button id="performance-tab" class="tab-button flex-1 px-6 py-4 text-sm font-medium border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700">
+                        <div class="flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            <span>Performans Tahmini</span>
+                        </div>
+                    </button>
+                </nav>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="p-6">
+                <!-- AdSets Tab Content -->
+                <div id="adsets-content" class="tab-content">
                     
-                    <!-- Left Column - AdSets List -->
-                    <div class="lg:col-span-5">
-                        <h3 class="heading text-lg font-semibold text-text mb-4">
-                            Reklam Setleri
-                        </h3>
+                    <!-- Metrics Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-gray-900" id="daily-reach">160K</div>
+                            <div class="text-sm text-gray-500">günlük erişim</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-gray-900" id="weekly-budget">$483</div>
+                            <div class="text-sm text-gray-500">haftalık bütçe</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-gray-900" id="monthly-budget">$2070</div>
+                            <div class="text-sm text-gray-500">aylık bütçe</div>
+                            <div class="text-xs text-gray-400 mt-1">tahmini erişim</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Assets Button -->
+                    <div class="mb-6">
+                        <button id="assets-button" class="flex items-center space-x-3 px-4 py-3 border border-gray-300 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-all">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="text-gray-600 font-medium">Görseller ve videolar (<span id="assets-count">12</span>)</span>
+                        </button>
+                    </div>
+                
+                    <!-- Reklam Setleri Section -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Reklam Setleri</h3>
                         
+                        <!-- Add New AdSet Button -->
+                        <div class="mb-6">
+                            <button id="add-adset-btn" class="w-full py-12 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 hover:border-gray-400 hover:text-gray-600 transition-all">
+                                <div class="flex flex-col items-center space-y-2">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                    <span class="font-medium">Yeni Reklam Seti Ekle</span>
+                                </div>
+                            </button>
+                        </div>
+                        
+                        <!-- AdSets List -->
                         <div id="adsets-list" class="space-y-4">
                             <!-- AdSet items will be populated by JS -->
                         </div>
-                        
-                        <!-- Add New AdSet Button -->
-                        <button id="add-adset-btn" class="w-full mt-4 py-3 border-2 border-dashed border-gray-300 rounded-xl2 text-muted hover:border-primary hover:text-primary hover:bg-primary/5 transition-all">
-                            <span class="font-medium">+ Yeni Reklam Seti Ekle</span>
-                        </button>
                     </div>
-                    
-                    <!-- Right Column - AdSet Detail -->
-                    <div class="lg:col-span-7">
-                        <div id="adset-detail">
-                            <!-- AdSet detail will be populated by JS using _AdSetCard partial -->
-                        </div>
-                    </div>
-                    
+                
                 </div>
                 
-            </div>
-            
-            <!-- Performance Tab Content -->
-            <div id="performance-content" class="tab-content hidden">
-                <div class="space-y-6">
-                    
-                    <!-- Performance Metrics -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl2 p-4 border border-blue-200">
-                            <div class="text-blue-600 text-sm font-medium mb-1">Tahmini Erişim</div>
-                            <div class="text-blue-900 text-2xl font-bold" id="metric-reach">
-                                <!-- Will be populated by JS -->
+                <!-- Performance Tab Content -->
+                <div id="performance-content" class="tab-content hidden">
+                    <div class="space-y-8">
+                        
+                        <!-- Performance Metrics -->
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+                                <div class="text-blue-600 text-sm font-medium mb-2">Tahmini Erişim</div>
+                                <div class="text-blue-900 text-2xl font-bold" id="metric-reach">
+                                    <!-- Will be populated by JS -->
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+                                <div class="text-green-600 text-sm font-medium mb-2">Gösterim</div>
+                                <div class="text-green-900 text-2xl font-bold" id="metric-impressions">
+                                    <!-- Will be populated by JS -->
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-xl p-6 border border-yellow-200">
+                                <div class="text-yellow-600 text-sm font-medium mb-2">Tıklanma</div>
+                                <div class="text-yellow-900 text-2xl font-bold" id="metric-clicks">
+                                    <!-- Will be populated by JS -->
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
+                                <div class="text-purple-600 text-sm font-medium mb-2">Dönüşüm</div>
+                                <div class="text-purple-900 text-2xl font-bold" id="metric-conversions">
+                                    <!-- Will be populated by JS -->
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-xl2 p-4 border border-green-200">
-                            <div class="text-green-600 text-sm font-medium mb-1">Gösterim</div>
-                            <div class="text-green-900 text-2xl font-bold" id="metric-impressions">
-                                <!-- Will be populated by JS -->
-                            </div>
+                        <!-- Performance Chart -->
+                        <div class="bg-white rounded-xl border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Performans Tahmini</h3>
+                            <div id="performance-chart-container"></div>
                         </div>
                         
-                        <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-xl2 p-4 border border-yellow-200">
-                            <div class="text-yellow-600 text-sm font-medium mb-1">Tıklanma</div>
-                            <div class="text-yellow-900 text-2xl font-bold" id="metric-clicks">
-                                <!-- Will be populated by JS -->
-                            </div>
-                        </div>
-                        
-                        <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl2 p-4 border border-purple-200">
-                            <div class="text-purple-600 text-sm font-medium mb-1">Dönüşüm</div>
-                            <div class="text-purple-900 text-2xl font-bold" id="metric-conversions">
-                                <!-- Will be populated by JS -->
-                            </div>
-                        </div>
                     </div>
-                    
-                    <!-- Performance Chart -->
-                    <div id="performance-chart-container"></div>
-                    
                 </div>
             </div>
-            
         </div>
+        
     </div>
     
     <!-- Hidden file input for assets -->
@@ -154,6 +242,36 @@
             setBudget(newBudget);
             // Update performance metrics when budget changes
             updatePerformanceMetrics(newBudget);
+            updateBudgetMetrics(newBudget);
+        };
+        
+        const updateBudgetMetrics = (budget) => {
+            // Update the metrics display
+            const dailyReachEl = document.getElementById('daily-reach');
+            const weeklyBudgetEl = document.getElementById('weekly-budget');
+            const monthlyBudgetEl = document.getElementById('monthly-budget');
+            const conversionRateEl = document.getElementById('conversion-rate');
+            
+            if (dailyReachEl) {
+                const reach = Math.round((budget / 30) * 160000);
+                dailyReachEl.textContent = formatNumber(reach);
+            }
+            
+            if (weeklyBudgetEl) {
+                weeklyBudgetEl.textContent = `$${budget * 7}`;
+            }
+            
+            if (monthlyBudgetEl) {
+                monthlyBudgetEl.textContent = `$${budget * 30}`;
+            }
+            
+            if (conversionRateEl) {
+                // Calculate conversion rate based on budget (higher budget = better optimization)
+                const baseRate = 2.4;
+                const budgetMultiplier = Math.min(budget / 50, 2); // Cap at 2x improvement
+                const rate = (baseRate * budgetMultiplier).toFixed(1);
+                conversionRateEl.textContent = `${rate}%`;
+            }
         };
         
         return (
@@ -182,21 +300,37 @@
         function initHeader() {
             // Set project title
             const titleEl = document.getElementById('project-title');
+            const goalDisplayEl = document.getElementById('goal-display');
+            const state = loadState();
+            
             if (titleEl && state.projectName) {
                 titleEl.textContent = state.projectName;
+            } else if (titleEl) {
+                titleEl.textContent = 'Akıllı Lens Ameliyatı – Göz İçi Mercek';
             }
             
-            // Set goal badge
-            const badgeEl = document.getElementById('goal-badge');
-            if (badgeEl && state.goal) {
+            // Set goal display
+            if (goalDisplayEl && state.goal) {
                 const goalInfo = getGoalInfo(state.goal);
-                badgeEl.innerHTML = `
-                    <span class="inline-flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
-                        <span>${goalInfo.icon}</span>
-                        <span>${goalInfo.label}</span>
-                    </span>
-                `;
+                goalDisplayEl.textContent = goalInfo.label;
             }
+            
+            // Set dates if available
+            const startDateEl = document.getElementById('start-date-display');
+            const endDateEl = document.getElementById('end-date-display');
+            
+            if (startDateEl && state.startAt) {
+                const date = new Date(state.startAt);
+                startDateEl.textContent = date.toLocaleDateString('tr-TR');
+            }
+            
+            if (endDateEl && state.endAt) {
+                const date = new Date(state.endAt);
+                endDateEl.textContent = date.toLocaleDateString('tr-TR');
+            }
+            
+            // Initialize budget metrics
+            updateBudgetMetrics(state.budget || 30);
         }
         
         function getGoalInfo(goal) {
@@ -250,27 +384,49 @@
         
         function initAdSetsList() {
             const adsetsList = document.getElementById('adsets-list');
-            const adsetDetail = document.getElementById('adset-detail');
             
             // Load adsets from data
             const adsets = window.AppData ? window.AppData.adsets : [];
             
-            // Render adsets list
+            // Render adsets list in grid format
             adsetsList.innerHTML = '';
             adsets.forEach((adset, index) => {
                 const adsetItem = document.createElement('div');
-                adsetItem.className = `adset-item p-4 border border-gray-200 rounded-xl2 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all ${index === 0 ? 'selected' : ''}`;
+                adsetItem.className = `adset-item bg-white rounded-xl border border-gray-200 p-6 cursor-pointer hover:border-blue-500 hover:shadow-lg transition-all ${index === 0 ? 'selected' : ''}`;
                 adsetItem.dataset.adsetId = adset.id;
                 
                 adsetItem.innerHTML = `
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between mb-4">
                         <div>
-                            <h4 class="font-semibold text-text">${adset.title}</h4>
-                            <p class="text-sm text-muted">${adset.age} • ${adset.gender}</p>
+                            <h4 class="font-semibold text-gray-900 text-lg">${adset.title}</h4>
+                            <p class="text-sm text-gray-500 mt-1">${adset.age} • ${adset.gender}</p>
                         </div>
                         <div class="text-right">
-                            <div class="text-lg font-semibold text-text">$${adset.spend}</div>
-                            <div class="text-xs text-muted">günlük</div>
+                            <div class="text-2xl font-bold text-blue-600">$${adset.spend}</div>
+                            <div class="text-xs text-gray-500">günlük</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            </svg>
+                            <span>${adset.locations.join(', ')}</span>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <p class="text-sm font-medium text-gray-900">${adset.headline}</p>
+                            <p class="text-xs text-gray-600 mt-1 line-clamp-2">${adset.body}</p>
+                        </div>
+                        
+                        <div class="flex items-center justify-between pt-2">
+                            <div class="flex space-x-1">
+                                ${adset.tags.slice(0, 2).map(tag => `<span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">${tag}</span>`).join('')}
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                ${adset.estimatedReach}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -303,92 +459,10 @@
             // Add selected to clicked item
             element.classList.add('selected');
             
-            // Render adset detail using the partial template structure
-            const adsetDetail = document.getElementById('adset-detail');
-            adsetDetail.innerHTML = `
-                <div class="bg-white rounded-xl2 shadow-card p-6 card-hover">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex-1">
-                            <h3 class="text-lg font-semibold text-text heading">${adset.title}</h3>
-                            <div class="flex items-center space-x-4 mt-2 text-sm text-muted">
-                                <span>Yaş: ${adset.age}</span>
-                                <span>•</span>
-                                <span>Cinsiyet: ${adset.gender}</span>
-                                <span>•</span>
-                                <span>Konum: ${adset.locations.join(', ')}</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm text-muted">Günlük:</span>
-                            <span class="text-lg font-semibold text-text">$${adset.spend}</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Audience Description -->
-                    <div class="mb-4">
-                        <h4 class="text-sm font-medium text-text mb-2">Hedef Kitle Açıklaması</h4>
-                        <p class="text-sm text-muted">${adset.audienceDescription}</p>
-                    </div>
-                    
-                    <!-- Ad Copy -->
-                    <div class="mb-4">
-                        <h4 class="text-sm font-medium text-text mb-2">Reklam Metni</h4>
-                        <div class="bg-gray-50 rounded-lg p-3">
-                            <p class="text-sm text-text font-medium mb-1">${adset.headline}</p>
-                            <p class="text-sm text-muted">${adset.body}</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Tags -->
-                    <div class="mb-4">
-                        <div class="flex flex-wrap gap-2">
-                            ${adset.tags.map(tag => `<span class="tag-pill px-2 py-1 rounded-full text-xs font-medium">${tag}</span>`).join('')}
-                        </div>
-                    </div>
-                    
-                    <!-- Post Preview -->
-                    <div class="border border-gray-200 rounded-lg p-3">
-                        <div class="flex items-center space-x-3 mb-3">
-                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                                <span class="text-white text-xs font-semibold">AL</span>
-                            </div>
-                            <div>
-                                <p class="text-sm font-medium text-text">Akıllı Lens Merkezi</p>
-                                <p class="text-xs text-muted">Sponsorlu</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Mock image placeholder -->
-                        <div class="w-full h-32 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg mb-3 flex items-center justify-center">
-                            <svg class="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                        </div>
-                        
-                        <p class="text-sm text-text">${adset.body}</p>
-                        
-                        <button class="w-full mt-3 bg-primary text-white py-2 rounded-lg text-sm font-medium hover:bg-primary600 transition-colors">
-                            ${state.cta || 'Daha Fazla Bilgi'}
-                        </button>
-                    </div>
-                    
-                    <!-- Actions -->
-                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-                        <div class="flex items-center space-x-3">
-                            <button class="text-sm text-primary hover:text-primary600 font-medium">Düzenle</button>
-                            <button class="text-sm text-muted hover:text-text">Kopyala</button>
-                        </div>
-                        
-                        <div class="flex items-center space-x-2 text-sm text-muted">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
-                            <span>${adset.estimatedReach}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
+            // Update any relevant metrics or UI based on selected adset
+            if (window.showToast) {
+                showToast(`${adset.title} seçildi`, 'info', 1500);
+            }
         }
         
         function initAssets() {
@@ -466,30 +540,60 @@
     .tab-button {
         border-bottom-color: transparent;
         color: #6B7280;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
     }
     
     .tab-button.active {
         border-bottom-color: #7B61FF;
         color: #7B61FF;
+        background-color: rgba(123, 97, 255, 0.05);
     }
     
     .tab-button:hover {
         color: #7B61FF;
+        background-color: rgba(123, 97, 255, 0.05);
     }
     
     .adset-item {
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
+        will-change: transform, box-shadow;
     }
     
     .adset-item.selected {
         border-color: #7B61FF;
         background-color: rgba(123, 97, 255, 0.1);
         box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.1);
+        transform: translateY(-2px);
     }
     
-    .goal-badge .inline-flex {
-        animation: pulse 2s infinite;
+    .adset-item:hover {
+        border-color: #7B61FF;
+        background-color: rgba(123, 97, 255, 0.05);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    /* Smooth animations for metrics */
+    .metric-animation {
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 }

@@ -65,20 +65,40 @@ function BudgetSlider({
 
     const handleSliderChange = (e) => {
         const newValue = parseInt(e.target.value);
+        
+        // Prevent unnecessary updates
+        if (newValue === budget) return;
+        
+        // Update state immediately for smooth UI
         setBudget(newValue);
         onChange(newValue);
         
-        // Update AutoNumeric
-        if (autoNumericRef.current?.autoNumeric) {
-            try {
-                AutoNumeric.set(autoNumericRef.current, newValue);
-            } catch (error) {
-                console.warn('AutoNumeric slider update failed:', error);
-            }
+        // Clear any pending timeout
+        if (handleSliderChange.autoNumericTimeout) {
+            clearTimeout(handleSliderChange.autoNumericTimeout);
+        }
+        if (handleSliderChange.saveTimeout) {
+            clearTimeout(handleSliderChange.saveTimeout);
         }
         
-        // Update localStorage
-        saveState({ budget: newValue });
+        // Debounce AutoNumeric update only when not dragging
+        if (autoNumericRef.current?.autoNumeric && !isDragging) {
+            handleSliderChange.autoNumericTimeout = setTimeout(() => {
+                try {
+                    const currentValue = AutoNumeric.getNumber(autoNumericRef.current);
+                    if (currentValue !== newValue) {
+                        AutoNumeric.set(autoNumericRef.current, newValue);
+                    }
+                } catch (error) {
+                    console.warn('AutoNumeric slider update failed:', error);
+                }
+            }, 150);
+        }
+        
+        // Debounce localStorage update
+        handleSliderChange.saveTimeout = setTimeout(() => {
+            saveState({ budget: newValue });
+        }, 200);
     };
 
     const getCurrentScale = () => {
@@ -101,117 +121,101 @@ function BudgetSlider({
 
     return (
         <div className={`space-y-6 ${className}`}>
-            {/* Budget Input */}
+            {/* Budget Input with improved styling */}
             {showCurrency && (
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium text-text">
-                        Günlük Bütçe
-                    </label>
-                    <div className="relative">
-                        <input
-                            ref={autoNumericRef}
-                            type="text"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-input bg-white text-lg font-semibold text-text focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                            placeholder="$30"
-                        />
-                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-muted">
-                            günlük
+                <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                        <div className="relative">
+                            <input
+                                ref={autoNumericRef}
+                                type="text"
+                                className="w-full px-4 py-4 text-3xl font-bold text-gray-900 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm"
+                                placeholder="$30"
+                            />
+                            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 font-medium">
+                                günlük
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* Slider */}
-            <div className="space-y-4">
-                <div className="relative">
-                    <input
-                        ref={sliderRef}
-                        type="range"
-                        min={min}
-                        max={max}
-                        value={budget}
-                        onChange={handleSliderChange}
-                        onMouseDown={() => setIsDragging(true)}
-                        onMouseUp={() => setIsDragging(false)}
-                        onTouchStart={() => setIsDragging(true)}
-                        onTouchEnd={() => setIsDragging(false)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20"
-                        style={{
-                            background: `linear-gradient(to right, #7B61FF 0%, #7B61FF ${((budget - min) / (max - min)) * 100}%, #E5E7EB ${((budget - min) / (max - min)) * 100}%, #E5E7EB 100%)`
-                        }}
-                    />
+            {/* Enhanced Slider with better positioning */}
+            <div className="space-y-6">
+                <div className="relative px-2">
+                    {/* Slider Track */}
+                    <div className="relative">
+                        <input
+                            ref={sliderRef}
+                            type="range"
+                            min={min}
+                            max={max}
+                            value={budget}
+                            onChange={handleSliderChange}
+                            onMouseDown={() => setIsDragging(true)}
+                            onMouseUp={() => setIsDragging(false)}
+                            onTouchStart={() => setIsDragging(true)}
+                            onTouchEnd={() => setIsDragging(false)}
+                            className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none slider-custom"
+                            style={{
+                                background: `linear-gradient(to right, #7B61FF 0%, #7B61FF ${((budget - min) / (max - min)) * 100}%, #E5E7EB ${((budget - min) / (max - min)) * 100}%, #E5E7EB 100%)`
+                            }}
+                        />
+                    </div>
                     
-                    {/* Scale markers */}
-                    <div className="absolute -bottom-8 left-0 right-0">
-                        {scales.map((scale, index) => (
-                            <div
-                                key={index}
-                                className="absolute transform -translate-x-1/2"
-                                style={{ left: `${scale.position}%` }}
-                            >
-                                <div className={`text-xs font-medium transition-colors ${
-                                    currentScale.label === scale.label ? 'text-primary' : 'text-muted'
-                                }`}>
-                                    {scale.label}
-                                </div>
+                    {/* Scale markers positioned below slider */}
+                    <div className="flex justify-between items-center mt-6 px-1">
+                        <div className="text-center">
+                            <div className={`text-sm font-medium transition-colors ${
+                                budget >= 10 && budget <= 30 ? 'text-blue-600' : 'text-gray-400'
+                            }`}>Limited</div>
+                            <div className="text-xs text-gray-400 mt-1">Sınırlı erişim</div>
+                        </div>
+                        <div className="text-center">
+                            <div className={`text-sm font-medium transition-colors ${
+                                budget > 30 && budget <= 80 ? 'text-blue-600' : 'text-gray-400'
+                            }`}>Basic Reach</div>
+                            <div className="text-xs text-gray-400 mt-1">Temel erişim</div>
+                        </div>
+                        <div className="text-center">
+                            <div className={`text-sm font-medium transition-colors ${
+                                budget > 80 ? 'text-blue-600' : 'text-gray-400'
+                            }`}>2x+ Results</div>
+                            <div className="text-xs text-gray-400 mt-1 whitespace-nowrap">2M - 3M</div>
+                            <div className="text-xs text-gray-400">tahmini erişim</div>
+                        </div>
+                    </div>
+                </div>
+                
+                {/* Budget Summary */}
+                <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-sm font-medium text-blue-800">Tahmini Günlük Erişim</div>
+                            <div className="text-lg font-bold text-blue-900">
+                                {formatNumber(reach.min)} - {formatNumber(reach.max)}
                             </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Current scale info */}
-            <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl2 p-4 border border-primary/20">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <div className="text-sm font-medium text-primary mb-1">
-                            {currentScale.label}
                         </div>
-                        <div className="text-xs text-muted">
-                            {currentScale.description}
+                        <div className="text-right">
+                            <div className="text-sm font-medium text-blue-800">Kategori</div>
+                            <div className="text-lg font-bold text-blue-900">{currentScale.label}</div>
                         </div>
-                    </div>
-                    <div className="text-right">
-                        <div className="text-sm font-semibold text-text">
-                            {formatNumber(reach.min)} - {formatNumber(reach.max)}
-                        </div>
-                        <div className="text-xs text-muted">
-                            tahmini erişim
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Budget impact indicators */}
-            <div className="grid grid-cols-3 gap-4">
-                <div className="text-center p-3 bg-white rounded-lg border border-gray-100">
-                    <div className="text-lg font-semibold text-text">
-                        {formatNumber(reach.min / 14)}
-                    </div>
-                    <div className="text-xs text-muted mt-1">
-                        günlük erişim
-                    </div>
-                </div>
-                <div className="text-center p-3 bg-white rounded-lg border border-gray-100">
-                    <div className="text-lg font-semibold text-text">
-                        ${budget * 7}
-                    </div>
-                    <div className="text-xs text-muted mt-1">
-                        haftalık bütçe
-                    </div>
-                </div>
-                <div className="text-center p-3 bg-white rounded-lg border border-gray-100">
-                    <div className="text-lg font-semibold text-text">
-                        ${budget * 30}
-                    </div>
-                    <div className="text-xs text-muted mt-1">
-                        aylık bütçe
                     </div>
                 </div>
             </div>
         </div>
     );
 }
+
+// Helper function for formatting numbers
+window.formatNumber = function(num) {
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    } else if (num >= 1000) {
+        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return num.toString();
+};
 
 // Export for global use
 window.BudgetSlider = BudgetSlider;

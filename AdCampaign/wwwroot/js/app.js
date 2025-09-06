@@ -234,6 +234,110 @@ function navigateWithTransition(url, delay = 0) {
     }
 }
 
+// Goal selection utility
+function initializeGoalSelection() {
+    const goalOptions = document.querySelectorAll('.goal-option');
+    
+    if (goalOptions.length === 0) return;
+    
+    goalOptions.forEach(option => {
+        // Remove any existing event listeners to prevent duplicates
+        option.removeEventListener('click', handleGoalClick);
+        
+        // Add click event listener
+        option.addEventListener('click', handleGoalClick);
+        
+        // Add hover effects
+        option.addEventListener('mouseenter', function() {
+            if (!this.classList.contains('selected')) {
+                this.style.transform = 'translateY(-2px)';
+            }
+        });
+        
+        option.addEventListener('mouseleave', function() {
+            if (!this.classList.contains('selected')) {
+                this.style.transform = 'translateY(0)';
+            }
+        });
+    });
+    
+    // Load saved state
+    const state = loadState();
+    if (state.goal) {
+        updateGoalSelection(state.goal);
+    }
+}
+
+function handleGoalClick() {
+    const goal = this.dataset.goal;
+    const radio = this.querySelector('input[type="radio"]');
+    
+    if (!radio) return;
+    
+    // Clear all selections first
+    const goalOptions = document.querySelectorAll('.goal-option');
+    goalOptions.forEach(opt => {
+        opt.classList.remove('selected');
+        const optRadio = opt.querySelector('input[type="radio"]');
+        if (optRadio) optRadio.checked = false;
+    });
+    
+    // Select clicked option
+    radio.checked = true;
+    this.classList.add('selected');
+    
+    // Add visual feedback
+    this.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+        this.style.transform = 'scale(1)';
+    }, 150);
+    
+    // Update state
+    saveState({ goal: goal });
+    
+    // Show selection feedback
+    const goalText = this.querySelector('.font-medium')?.textContent;
+    if (window.showToast && goalText) {
+        showToast(`Hedef seçildi: ${goalText}`, 'success', 2000);
+    }
+    
+    // Update visual selection
+    updateGoalSelection(goal);
+}
+
+function updateGoalSelection(selectedGoal) {
+    const goalOptions = document.querySelectorAll('.goal-option');
+    
+    goalOptions.forEach(option => {
+        const goalLabel = option.querySelector('.goal-label');
+        const radio = option.querySelector('input[type="radio"]');
+        
+        if (option.dataset.goal === selectedGoal) {
+            option.classList.add('selected');
+            if (radio) radio.checked = true;
+            
+            // Add checkmark icon
+            let checkmark = option.querySelector('.goal-checkmark');
+            if (!checkmark && goalLabel) {
+                checkmark = document.createElement('div');
+                checkmark.className = 'goal-checkmark absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center';
+                checkmark.innerHTML = '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>';
+                goalLabel.style.position = 'relative';
+                goalLabel.appendChild(checkmark);
+            }
+        } else {
+            option.classList.remove('selected');
+            if (radio) radio.checked = false;
+            
+            // Remove checkmark
+            const checkmark = option.querySelector('.goal-checkmark');
+            if (checkmark) {
+                checkmark.remove();
+            }
+        }
+    });
+}
+
 // URL parameter helpers
 function getUrlParams() {
     const params = new URLSearchParams(window.location.search);
@@ -260,6 +364,11 @@ function updateUrlParams(params) {
 document.addEventListener('DOMContentLoaded', function() {
     // Load saved state
     Object.assign(window.appState, loadState());
+    
+    // Initialize goal selection on all pages
+    setTimeout(() => {
+        initializeGoalSelection();
+    }, 200);
     
     // Initialize any page-specific functionality
     const path = window.location.pathname;
@@ -302,6 +411,11 @@ function initAnalyzePage() {
 function initSetupPage() {
     // Initialize setup page functionality
     console.log('Setup page initialized');
+    
+    // Initialize goal selection
+    setTimeout(() => {
+        initializeGoalSelection();
+    }, 100);
 }
 
 function initAdSetsPage() {
@@ -331,3 +445,5 @@ window.debounce = debounce;
 window.fadeIn = fadeIn;
 window.fadeOut = fadeOut;
 window.navigateWithTransition = navigateWithTransition;
+window.initializeGoalSelection = initializeGoalSelection;
+window.updateGoalSelection = updateGoalSelection;

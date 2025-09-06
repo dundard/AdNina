@@ -142,14 +142,16 @@
                         <label for="cta-select" class="block text-sm font-medium text-text mb-2">
                             Dönüşüm Düğmesi
                         </label>
-                        <select 
-                            id="cta-select"
-                            name="cta"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-input focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                        >
-                            <option value="">Seçiniz</option>
-                            <!-- Options will be populated by JS -->
-                        </select>
+                        <div class="form-field-wrapper">
+                            <select 
+                                id="cta-select"
+                                name="cta"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-input focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                            >
+                                <option value="">Seçiniz</option>
+                                <!-- Options will be populated by JS -->
+                            </select>
+                        </div>
                     </div>
                     
                     <!-- Date Range -->
@@ -232,9 +234,37 @@
             saveState({ locations: newLocations });
         };
         
-        const suggestions = window.AppData ? window.AppData.locations : [
-            'Turkey', 'Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya'
-        ];
+        // Generate suggestions from enhanced location data
+        const generateSuggestions = () => {
+            let suggestions = [];
+            
+            if (window.AppData && window.AppData.locationData) {
+                const { countries } = window.AppData.locationData;
+                
+                // Add countries
+                countries.forEach(country => {
+                    suggestions.push(country.name);
+                    
+                    // Add cities for each country
+                    country.cities.forEach(city => {
+                        suggestions.push(`${city}, ${country.name}`);
+                        suggestions.push(city); // Also add city without country for easy search
+                    });
+                });
+            }
+            
+            // Fallback to simple locations if enhanced data not available
+            if (suggestions.length === 0) {
+                suggestions = window.AppData ? window.AppData.locations : [
+                    'Turkey', 'Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya'
+                ];
+            }
+            
+            // Remove duplicates and sort
+            return [...new Set(suggestions)].sort();
+        };
+        
+        const suggestions = generateSuggestions();
         
         return (
             <TagInput 
@@ -242,6 +272,8 @@
                 onChange={handleLocationsChange}
                 suggestions={suggestions}
                 placeholder="Şehir veya ülke ekleyin..."
+                maxTags={10}
+                showCount={true}
             />
         );
     }
@@ -368,19 +400,55 @@
         
         function initCTAOptions() {
             const ctaSelect = document.getElementById('cta-select');
-            const ctaOptions = window.AppData ? window.AppData.ctaOptions : [
+            const allOptions = window.AppData ? window.AppData.allCtaOptions : [
                 'Daha Fazla Bilgi',
                 'Ücretsiz Konsültasyon',
                 'Randevu Al',
                 'Hemen Ara'
             ];
             
-            ctaOptions.forEach(option => {
-                const optionEl = document.createElement('option');
-                optionEl.value = option;
-                optionEl.textContent = option;
-                ctaSelect.appendChild(optionEl);
-            });
+            // Clear existing options except the first one
+            ctaSelect.innerHTML = '<option value="">Seçiniz</option>';
+            
+            // Group options by category if available
+            if (window.AppData && window.AppData.ctaOptions) {
+                const categories = {
+                    'Konsültasyon': window.AppData.ctaOptions.consultation,
+                    'Randevu': window.AppData.ctaOptions.appointment,
+                    'İletişim': window.AppData.ctaOptions.contact,
+                    'Bilgi': window.AppData.ctaOptions.information,
+                    'Video': window.AppData.ctaOptions.video,
+                    'Test': window.AppData.ctaOptions.test,
+                    'Özel Teklifler': window.AppData.ctaOptions.offer
+                };
+                
+                Object.keys(categories).forEach(categoryName => {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = categoryName;
+                    
+                    categories[categoryName].forEach(option => {
+                        const optionEl = document.createElement('option');
+                        optionEl.value = option;
+                        optionEl.textContent = option;
+                        optgroup.appendChild(optionEl);
+                    });
+                    
+                    ctaSelect.appendChild(optgroup);
+                });
+            } else {
+                // Fallback: simple options
+                allOptions.forEach(option => {
+                    const optionEl = document.createElement('option');
+                    optionEl.value = option;
+                    optionEl.textContent = option;
+                    ctaSelect.appendChild(optionEl);
+                });
+            }
+            
+            // Set saved value
+            if (state.cta) {
+                ctaSelect.value = state.cta;
+            }
         }
         
         function loadBusinessSummary() {
@@ -437,18 +505,69 @@
             option.addEventListener('click', function() {
                 const goal = this.dataset.goal;
                 const radio = this.querySelector('input[type="radio"]');
+                
+                // Clear all selections first
+                goalOptions.forEach(opt => {
+                    opt.classList.remove('selected');
+                    opt.querySelector('input[type="radio"]').checked = false;
+                });
+                
+                // Select clicked option
                 radio.checked = true;
-                updateGoalSelection(goal);
+                this.classList.add('selected');
+                
+                // Add visual feedback
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+                
+                // Update state
                 saveState({ goal: goal });
+                
+                // Show selection feedback
+                showToast(`Hedef seçildi: ${this.querySelector('.font-medium').textContent}`, 'success', 2000);
+            });
+            
+            // Add hover effects
+            option.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('selected')) {
+                    this.style.transform = 'translateY(-2px)';
+                }
+            });
+            
+            option.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('selected')) {
+                    this.style.transform = 'translateY(0)';
+                }
             });
         });
         
         function updateGoalSelection(selectedGoal) {
             goalOptions.forEach(option => {
+                const goalLabel = option.querySelector('.goal-label');
                 if (option.dataset.goal === selectedGoal) {
                     option.classList.add('selected');
+                    option.querySelector('input[type="radio"]').checked = true;
+                    
+                    // Add checkmark icon
+                    let checkmark = option.querySelector('.goal-checkmark');
+                    if (!checkmark) {
+                        checkmark = document.createElement('div');
+                        checkmark.className = 'goal-checkmark absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center';
+                        checkmark.innerHTML = '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>';
+                        goalLabel.style.position = 'relative';
+                        goalLabel.appendChild(checkmark);
+                    }
                 } else {
                     option.classList.remove('selected');
+                    option.querySelector('input[type="radio"]').checked = false;
+                    
+                    // Remove checkmark
+                    const checkmark = option.querySelector('.goal-checkmark');
+                    if (checkmark) {
+                        checkmark.remove();
+                    }
                 }
             });
         }
@@ -473,27 +592,120 @@
     
     .goal-option {
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
     }
     
     .goal-label {
         display: block;
-        padding: 1rem;
+        padding: 1.25rem;
         border: 2px solid #E5E7EB;
         border-radius: 0.875rem;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .goal-label::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(123, 97, 255, 0.1), transparent);
+        transition: left 0.5s;
     }
     
     .goal-option:hover .goal-label {
         border-color: #7B61FF;
         background-color: rgba(123, 97, 255, 0.05);
+        box-shadow: 0 4px 12px rgba(123, 97, 255, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    .goal-option:hover .goal-label::before {
+        left: 100%;
     }
     
     .goal-option.selected .goal-label {
         border-color: #7B61FF;
-        background-color: rgba(123, 97, 255, 0.1);
+        background: linear-gradient(135deg, rgba(123, 97, 255, 0.1) 0%, rgba(123, 97, 255, 0.05) 100%);
+        box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.1), 0 8px 25px rgba(123, 97, 255, 0.2);
+        transform: translateY(-1px);
+    }
+    
+    .goal-option.selected .goal-label .font-medium {
+        color: #7B61FF;
+        font-weight: 600;
+    }
+    
+    .goal-checkmark {
+        animation: checkmarkAppear 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    @@keyframes checkmarkAppear {
+        0% {
+            opacity: 0;
+            transform: scale(0) rotate(180deg);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+    }
+    
+    .goal-option:active {
+        transform: scale(0.98);
+    }
+    
+    /* Enhanced CTA Select Styling */
+    #cta-select {
+        background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%237B61FF' viewBox='0 0 16 16'><path d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: calc(100% - 12px) center;
+        background-size: 12px;
+        appearance: none;
+        padding-right: 40px;
+    }
+    
+    #cta-select:focus {
         box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.1);
+    }
+    
+    /* Optgroup styling */
+    #cta-select optgroup {
+        font-weight: 600;
+        color: #7B61FF;
+        background: rgba(123, 97, 255, 0.05);
+    }
+    
+    #cta-select option {
+        padding: 8px 12px;
+        color: #374151;
+    }
+    
+    /* Form field focus animations */
+    .form-field-wrapper {
+        position: relative;
+    }
+    
+    .form-field-wrapper::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: #7B61FF;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+    
+    .form-field-wrapper:focus-within::after {
+        width: 100%;
     }
 </style>
 }
