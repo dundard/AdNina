@@ -1,0 +1,44 @@
+/* Additional custom styles if needed */
+
+.neumorphic-input {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+
+.neumorphic-input:focus {
+    box-shadow: inset 2px 2px 5px rgba(123, 97, 255, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.9);
+    border-color: #7B61FF;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #7B61FF 0%, #6A4CFE 100%);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(123, 97, 255, 0.3);
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 45px rgba(123, 97, 255, 0.2);
+}
+
+.tag-pill {
+    background: rgba(123, 97, 255, 0.1);
+    color: #7B61FF;
+    border: 1px solid rgba(123, 97, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.tag-pill:hover {
+    background: rgba(123, 97, 255, 0.2);
+    border-color: rgba(123, 97, 255, 0.3);
+}
